@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,10 +8,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace linklives_api
@@ -28,18 +32,56 @@ namespace linklives_api
         {
 
             services.AddControllers();
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "linklives_api", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        Implicit = new OpenApiOAuthFlow
+                        {
+                            Scopes = new Dictionary<string, string>
+                {
+                    { "openid", "Open Id" }
+                },
+                            AuthorizationUrl = new Uri("https://" + Configuration["Auth0:Domain"] + "/authorize?audience=" + Configuration["Auth0:Audience"])
+                        }
+                    }
+                });
+            });
+            #region auth0
+            string domain = $"https://{Configuration["Auth0:Domain"]}/";
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = domain;
+                    options.Audience = Configuration["Auth0:Audience"];
+                    // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = ClaimTypes.NameIdentifier
+                    };
+                });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
             });
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen();
+            services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            #region Swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
@@ -49,6 +91,7 @@ namespace linklives_api
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+            #endregion
 
             if (env.IsDevelopment())
             {
@@ -59,14 +102,15 @@ namespace linklives_api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
-            
+
         }
     }
 }
