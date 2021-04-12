@@ -19,7 +19,7 @@ namespace linklives_api.Controllers
             });
         }
         [HttpGet("private-scoped")]
-        [Authorize("read:messages")]
+        [Authorize("read:links")]
         public IActionResult Scoped()
         {
             return Ok(new

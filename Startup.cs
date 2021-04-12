@@ -44,12 +44,9 @@ namespace linklives_api
                     Type = SecuritySchemeType.OAuth2,
                     Flows = new OpenApiOAuthFlows
                     {
-                        Implicit = new OpenApiOAuthFlow
+                        AuthorizationCode = new OpenApiOAuthFlow
                         {
-                            Scopes = new Dictionary<string, string>
-                {
-                    { "openid", "Open Id" }
-                },
+                            Scopes = new Dictionary<string, string> { { "read:links", "Read links from database" }, { "add:link", "Add new link" } },
                             AuthorizationUrl = new Uri("https://" + Configuration["Auth0:Domain"] + "/authorize?audience=" + Configuration["Auth0:Audience"])
                         }
                     }
