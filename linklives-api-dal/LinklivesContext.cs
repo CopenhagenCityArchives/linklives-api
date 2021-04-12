@@ -20,6 +20,25 @@ namespace linklives_api_dal
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<LifeCourse>(entity =>
+            {
+                entity.HasKey(x => x.life_course_key);
+                entity.HasMany(x => x.Links).WithOne(x => x.LifeCourse);
+            });
+
+            modelBuilder.Entity<Link>(entity =>
+            {
+                entity.HasKey(x => x.link_key);
+                entity.HasOne(x => x.LifeCourse).WithMany(x => x.Links);
+            });
+
+            modelBuilder.Entity<LinkRating>(entity =>
+            {
+                entity.HasKey(x => x.Id);
+                entity.HasOne(x => x.Link);
+            });
+
         }
     }
 }

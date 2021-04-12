@@ -8,9 +8,10 @@ namespace linklives_api_dal.domain
 {
     public class LinkRating
     {
-        public int ratingId { get; set; }
+        public int Id { get; set; }
         public bool rating { get; set; }
         public RatingDescription Description { get; set; }
+        public virtual Link Link { get; set; }
     }
 
     public enum RatingDescription
