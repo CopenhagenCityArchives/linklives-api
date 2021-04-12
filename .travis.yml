@@ -1,0 +1,47 @@
+os: linux
+dist: xenial
+
+language: php
+
+php:
+  - 7.3
+
+services:
+  - docker
+
+stages:
+  - name: script
+    if: branch in (master, development)
+  - name: deploy
+    if: branch in (master, development)
+
+before_install:
+  # Stop travis mysql as we're using MySQL in an image
+  - sudo service mysql stop
+  # Print Docker version for debugging purposes
+  - docker --version
+     
+# Setup containers, run tests, clean up, install production dependencies and push Docker image
+script:
+  # Prepare for deployment of Docker image
+  - pip install --user awscli # install aws cli w/o sudo
+  - export PATH=$PATH:$HOME/.local/bin # put aws in the path
+  - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 282251075226.dkr.ecr.eu-west-1.amazonaws.com #needs AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY envvars
+
+  # Add tag in Dockerrun.aws.json
+  - sed -i "s/{image-tag}/${IMAGE_TAG}/g" docker-compose.yml
+
+  # build and push APACS image
+  - docker build -f ./linklives-api/Dockerfile -t linklives-api .
+  - docker tag linklives-api 282251075226.dkr.ecr.eu-west-1.amazonaws.com/linklives-api:${IMAGE_TAG}
+  - docker push 282251075226.dkr.ecr.eu-west-1.amazonaws.com/linklives-api:${IMAGE_TAG}
+
+deploy:
+  - provider: elasticbeanstalk
+    access_key_id: ${AWS_ACCESS_KEY_ID}
+    secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+    region: eu-west-1
+    app: linklives-api
+    env: linklives-api-1
+    bucket: elasticbeanstalk-eu-west-1-282251075226
+    edge: true
