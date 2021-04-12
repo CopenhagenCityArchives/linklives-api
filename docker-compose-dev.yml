@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+
+  linklives-api:
+    build:
+      context: ./
+      dockerfile: ./linklives-api/Dockerfile
+    container_name: linklives-api-webserver
+    ports: 
+      - "80:80"
+    depends_on:
+      - mysql
+    environment:
+      - linklives-db-user=dev
+      - linklives-db-password=123456
+      - linklives-db-database=linklives-db
+  linklives-db:
+    image: mysql:8.0.20
+    container_name: linklives-db
+    volumes:
+      - ./db-structure
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: linklives-db
