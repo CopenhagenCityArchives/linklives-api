@@ -3,8 +3,8 @@ services:
 
   linklives-api:
     build:
-      context: ./
-      dockerfile: ./linklives-api/Dockerfile
+      context: ./linklives-api/
+      dockerfile: ./Dockerfile
     container_name: linklives-api-webserver
     ports: 
       - "80:80"
