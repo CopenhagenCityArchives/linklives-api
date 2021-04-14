@@ -12,11 +12,11 @@ namespace linkRatinglives_api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LinkRatingRatingController : ControllerBase
+    public class LinkRatingController : ControllerBase
     {
         private readonly ILinkRatingRepository repository;
 
-        public LinkRatingRatingController(ILinkRatingRepository repository)
+        public LinkRatingController(ILinkRatingRepository repository)
         {
             this.repository = repository;
         }
