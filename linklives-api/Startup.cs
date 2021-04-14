@@ -17,6 +17,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using linklives_api_dal;
+using linklives_api_dal.Repositories;
 
 namespace linklives_api
 {
@@ -78,6 +79,9 @@ namespace linklives_api
 
             services.AddDbContext<LinklivesContext>(options =>
            options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<ILifeCourseRepository, EFLifeCourseRepository>();
+            services.AddScoped<ILinkRepository, EFLinkRepository>();
+            services.AddScoped<ILinkRatingRepository, EFLinkRatingRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
