@@ -10,9 +10,10 @@ namespace linklives_api_dal.Repositories
     public interface ILifeCourseRepository
     {
         IEnumerable<LifeCourse> GetLifeCourses();
-        LifeCourse GetLifeCourseByID(int lifeCourseKey);
+        LifeCourse GetLifeCourseByID(string lifeCourseKey);
+        void InsertLifeCourse(LifeCourse lifeCourse);
         void InsertLifeCourses(IEnumerable<LifeCourse> lifeCourses);
-        void DeleteLifeCourse(int lifeCourseKey);
+        void DeleteLifeCourse(string lifeCourseKey);
         void Save();
     }
 }
