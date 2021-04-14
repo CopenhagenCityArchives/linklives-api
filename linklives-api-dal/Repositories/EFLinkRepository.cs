@@ -16,12 +16,12 @@ namespace linklives_api_dal.Repositories
             this.context = context;
         }
 
-        public void DeleteLink(int linkKey)
+        public void DeleteLink(string linkKey)
         {
             throw new NotImplementedException();
         }
 
-        public Link GetLinkByID(int linkKey)
+        public Link GetLinkByID(string linkKey)
         {
             throw new NotImplementedException();
         }

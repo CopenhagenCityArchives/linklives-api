@@ -16,17 +16,22 @@ namespace linklives_api_dal.Repositories
             this.context = context;
         }
 
-        public void DeleteLifeCourse(int lifeCourseKey)
+        public void DeleteLifeCourse(string lifeCourseKey)
         {
             throw new NotImplementedException();
         }
 
-        public LifeCourse GetLifeCourseByID(int lifeCourseKey)
+        public LifeCourse GetLifeCourseByID(string lifeCourseKey)
         {
             throw new NotImplementedException();
         }
 
         public IEnumerable<LifeCourse> GetLifeCourses()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InsertLifeCourse(LifeCourse lifeCourse)
         {
             throw new NotImplementedException();
         }
