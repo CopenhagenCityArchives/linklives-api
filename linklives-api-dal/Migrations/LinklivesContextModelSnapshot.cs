@@ -7,7 +7,7 @@ using linklives_api_dal;
 namespace linklives_api_dal.Migrations
 {
     [DbContext(typeof(LinklivesContext))]
-    partial class LinklivesContextModelSnapshot : ModelSnapshot
+    partial public class LinklivesContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

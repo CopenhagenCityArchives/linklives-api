@@ -9,7 +9,7 @@ namespace linklives_api_dal.Migrations
 {
     [DbContext(typeof(LinklivesContext))]
     [Migration("20210412144946_InitialCreate")]
-    partial class InitialCreate
+    partial public class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

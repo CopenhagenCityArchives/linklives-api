@@ -3,7 +3,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace linklives_api_dal.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial public class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
