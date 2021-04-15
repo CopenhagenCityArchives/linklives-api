@@ -23,13 +23,13 @@ namespace linklives_api_dal
 
             modelBuilder.Entity<LifeCourse>(entity =>
             {
-                entity.HasKey(x => x.life_course_key);
+                entity.HasKey(x => x.Key);
                 entity.HasMany(x => x.Links).WithOne(x => x.LifeCourse);
             });
 
             modelBuilder.Entity<Link>(entity =>
             {
-                entity.HasKey(x => x.link_key);
+                entity.HasKey(x => x.Key);
                 entity.HasOne(x => x.LifeCourse).WithMany(x => x.Links);
             });
 
