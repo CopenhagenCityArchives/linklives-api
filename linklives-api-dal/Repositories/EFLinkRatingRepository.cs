@@ -7,38 +7,20 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public class EFLinkRatingRepository : ILinkRatingRepository
+    public class EFLinkRatingRepository : BaseEFRepository<LinkRating>, ILinkRatingRepository
     {
-        private readonly LinklivesContext context;
-
-        public EFLinkRatingRepository(LinklivesContext context)
+        public EFLinkRatingRepository(LinklivesContext context) : base(context)
         {
-            this.context = context;
         }
-
-        public void DeleteLinkRating(int linkRatingId)
+        public new LinkRating GetByKey(string key)
         {
+            //This is the only one of our domain object that doesnt have a string as its primary key
             throw new NotImplementedException();
         }
 
-        public LinkRating GetLinkRatingByID(int linkRatingId)
+        public LinkRating GetById(int linkRatingId)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<LinkRating> GetLinkRatings()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void InsertLinkRating(LinkRating linkRating)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Save()
-        {
-            throw new NotImplementedException();
+            return context.LinkRatings.Find(linkRatingId);
         }
     }
 }

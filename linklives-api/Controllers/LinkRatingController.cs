@@ -25,7 +25,7 @@ namespace linkRatinglives_api.Controllers
         [HttpGet]
         public ActionResult Get(int id)
         {
-            var result = repository.GetLinkRatingByID(id);
+            var result = repository.GetById(id);
             if (result != null)
             {
                 return Ok(result);
@@ -40,7 +40,7 @@ namespace linkRatinglives_api.Controllers
         {
             try
             {
-                repository.InsertLinkRating(linkRating);
+                repository.Insert(linkRating);
                 repository.Save();
                 return Ok();
             }
@@ -54,7 +54,7 @@ namespace linkRatinglives_api.Controllers
         [Authorize]
         public ActionResult Delete(int id)
         {
-            repository.DeleteLinkRating(id);
+            repository.Insert(id);
             repository.Save();
             return Ok();
         }
