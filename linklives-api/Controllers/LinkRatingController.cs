@@ -54,7 +54,7 @@ namespace linkRatinglives_api.Controllers
         [Authorize]
         public ActionResult Delete(int id)
         {
-            repository.Insert(id);
+            repository.Delete(id);
             repository.Save();
             return Ok();
         }

@@ -13,6 +13,7 @@ namespace linklives_api_dal.Repositories
         LinkRating GetById(int linkRatingId);
         void Insert(LinkRating linkRating);
         void Insert(IEnumerable<LinkRating> linkRatings);
+        void Delete(int id);
         void Save();
     }
 }

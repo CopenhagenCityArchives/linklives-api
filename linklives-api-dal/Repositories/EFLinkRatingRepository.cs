@@ -17,10 +17,21 @@ namespace linklives_api_dal.Repositories
             //This is the only one of our domain object that doesnt have a string as its primary key
             throw new NotImplementedException();
         }
+        public new void Delete(string key)
+        {
+            //This is the only one of our domain object that doesnt have a string as its primary key
+            throw new NotImplementedException();
+        }
 
         public LinkRating GetById(int linkRatingId)
         {
             return context.LinkRatings.Find(linkRatingId);
+        }
+
+        public void Delete(int id)
+        {
+            var entity = context.LinkRatings.Find(id);
+            context.LinkRatings.Remove(entity);
         }
     }
 }
