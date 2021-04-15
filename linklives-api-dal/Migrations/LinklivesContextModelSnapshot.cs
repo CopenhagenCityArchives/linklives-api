@@ -7,7 +7,7 @@ using linklives_api_dal;
 namespace linklives_api_dal.Migrations
 {
     [DbContext(typeof(LinklivesContext))]
-    public partial class LinklivesContextModelSnapshot : ModelSnapshot
+    partial class LinklivesContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -18,64 +18,64 @@ namespace linklives_api_dal.Migrations
 
             modelBuilder.Entity("linklives_api_dal.domain.LifeCourse", b =>
                 {
-                    b.Property<string>("life_course_key")
+                    b.Property<string>("Key")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<int>("life_course_id")
+                    b.Property<int>("Life_course_id")
                         .HasColumnType("int");
 
-                    b.HasKey("life_course_key");
+                    b.HasKey("Key");
 
                     b.ToTable("LifeCourses");
                 });
 
             modelBuilder.Entity("linklives_api_dal.domain.Link", b =>
                 {
-                    b.Property<string>("link_key")
+                    b.Property<string>("Key")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<string>("LifeCourselife_course_key")
+                    b.Property<int>("Iteration")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Iteration_inner")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LifeCourseKey")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<int>("iteration")
+                    b.Property<int>("Link_id")
                         .HasColumnType("int");
 
-                    b.Property<int>("iteration_inner")
-                        .HasColumnType("int");
-
-                    b.Property<int>("link_id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("method_description")
+                    b.Property<string>("Method_description")
                         .HasColumnType("text");
 
-                    b.Property<int>("method_id")
+                    b.Property<int>("Method_id")
                         .HasColumnType("int");
 
-                    b.Property<string>("method_subtype1")
+                    b.Property<string>("Method_subtype1")
                         .HasColumnType("text");
 
-                    b.Property<string>("method_type")
+                    b.Property<string>("Method_type")
                         .HasColumnType("text");
 
-                    b.Property<int>("pa_id1")
+                    b.Property<int>("Pa_id1")
                         .HasColumnType("int");
 
-                    b.Property<int>("pa_id2")
+                    b.Property<int>("Pa_id2")
                         .HasColumnType("int");
 
-                    b.Property<double>("score")
+                    b.Property<double>("Score")
                         .HasColumnType("double");
 
-                    b.Property<int>("source_id1")
+                    b.Property<int>("Source_id1")
                         .HasColumnType("int");
 
-                    b.Property<int>("source_id2")
+                    b.Property<int>("Source_id2")
                         .HasColumnType("int");
 
-                    b.HasKey("link_key");
+                    b.HasKey("Key");
 
-                    b.HasIndex("LifeCourselife_course_key");
+                    b.HasIndex("LifeCourseKey");
 
                     b.ToTable("Links");
                 });
@@ -89,15 +89,15 @@ namespace linklives_api_dal.Migrations
                     b.Property<int>("Description")
                         .HasColumnType("int");
 
-                    b.Property<string>("link_key")
+                    b.Property<string>("LinkKey")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<bool>("rating")
+                    b.Property<bool>("Rating")
                         .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("link_key");
+                    b.HasIndex("LinkKey");
 
                     b.ToTable("LinkRatings");
                 });
@@ -106,7 +106,7 @@ namespace linklives_api_dal.Migrations
                 {
                     b.HasOne("linklives_api_dal.domain.LifeCourse", "LifeCourse")
                         .WithMany("Links")
-                        .HasForeignKey("LifeCourselife_course_key");
+                        .HasForeignKey("LifeCourseKey");
 
                     b.Navigation("LifeCourse");
                 });
@@ -115,7 +115,7 @@ namespace linklives_api_dal.Migrations
                 {
                     b.HasOne("linklives_api_dal.domain.Link", "Link")
                         .WithMany()
-                        .HasForeignKey("link_key");
+                        .HasForeignKey("LinkKey");
 
                     b.Navigation("Link");
                 });
