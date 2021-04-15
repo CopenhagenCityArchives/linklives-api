@@ -8,8 +8,8 @@ namespace linklives_api_dal.domain
 {
     public class LifeCourse
     {
-        public int life_course_id { get; set; }
-        public string life_course_key { get; set; }
+        public int Life_course_id { get; set; }
+        public string Key { get; set; }
         public virtual ICollection<Link> Links { get; set; }
     }
 }
