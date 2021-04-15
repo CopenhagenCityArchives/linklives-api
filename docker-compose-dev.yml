@@ -3,13 +3,13 @@ services:
 
   linklives-api:
     build:
-      context: ./linklives-api/
-      dockerfile: ./Dockerfile
+      context: ./
+      dockerfile: ./linklives-api/Dockerfile
     container_name: linklives-api-webserver
     ports: 
       - "80:80"
     depends_on:
-      - mysql
+      - linklives-db
     environment:
       - linklives-db-user=dev
       - linklives-db-password=123456
