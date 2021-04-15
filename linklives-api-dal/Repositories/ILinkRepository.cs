@@ -9,11 +9,11 @@ namespace linklives_api_dal.Repositories
 {
     public interface ILinkRepository
     {
-        IEnumerable<Link> GetLinks();
-        Link GetLinkByID(string linkKey);
-        void InsertLink(Link link);
-        void InsertLinks(IEnumerable<Link> links);
-        void DeleteLink(string linkKey);
+        IEnumerable<Link> GetAll();
+        Link GetByKey(string linkKey);
+        void Insert(Link link);
+        void Insert(IEnumerable<Link> links);
+        void Delete(string linkKey);
         void Save();
     }
 }

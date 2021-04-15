@@ -24,7 +24,7 @@ namespace linklives_api.Controllers
         [HttpGet]
         public ActionResult Get(string id)
         {
-            var result = repository.GetLifeCourseByID(id);
+            var result = repository.GetByKey(id);
             if (result != null)
             {
                 return Ok(result);
@@ -39,7 +39,7 @@ namespace linklives_api.Controllers
         {
             try
             {
-                repository.InsertLifeCourse(lifeCourse);
+                repository.Insert(lifeCourse);
                 repository.Save();
                 return Ok();
             }
@@ -56,7 +56,7 @@ namespace linklives_api.Controllers
         {
             try
             {
-                repository.InsertLifeCourses(lifeCourses);
+                repository.Insert(lifeCourses);
                 repository.Save();
                 return Ok();
             }
@@ -70,7 +70,7 @@ namespace linklives_api.Controllers
         [Authorize]
         public ActionResult Delete(string id)
         {
-            repository.DeleteLifeCourse(id);
+            repository.Delete(id);
             repository.Save();
             return Ok();
         }
