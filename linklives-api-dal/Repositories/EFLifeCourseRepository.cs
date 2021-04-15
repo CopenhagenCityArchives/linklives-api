@@ -18,22 +18,23 @@ namespace linklives_api_dal.Repositories
 
         public void DeleteLifeCourse(string lifeCourseKey)
         {
-            throw new NotImplementedException();
+            var lifecourse = context.LifeCourses.Find(lifeCourseKey);
+            context.LifeCourses.Remove(lifecourse);
         }
 
         public LifeCourse GetLifeCourseByID(string lifeCourseKey)
         {
-            throw new NotImplementedException();
+            return context.LifeCourses.Find(lifeCourseKey);
         }
 
         public IEnumerable<LifeCourse> GetLifeCourses()
         {
-            throw new NotImplementedException();
+            return context.LifeCourses;
         }
 
         public void InsertLifeCourse(LifeCourse lifeCourse)
         {
-            throw new NotImplementedException();
+            context.LifeCourses.Add(lifeCourse);
         }
 
         public void InsertLifeCourses(IEnumerable<LifeCourse> lifeCourses)
