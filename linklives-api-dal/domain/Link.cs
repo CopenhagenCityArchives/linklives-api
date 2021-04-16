@@ -21,7 +21,6 @@ namespace linklives_api_dal.domain
         public string Method_subtype1 { get; set; }
         public string Method_description { get; set; }
         public string LifeCourseKey { get; set; }
-        public virtual LifeCourse LifeCourse { get; set; }
         public virtual IEnumerable<LinkRating> Ratings { get; set; }
     }
 }
