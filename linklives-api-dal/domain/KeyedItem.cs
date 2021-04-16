@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.domain
 {
-    public class LifeCourse : KeyedItem
+    public abstract class KeyedItem
     {
-        public int Life_course_id { get; set; }
-        public virtual ICollection<Link> Links { get; set; }
+        public string Key { get; set; }
     }
 }

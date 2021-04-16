@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public class EFLifeCourseRepository : BaseEFRepository<LifeCourse>, ILifeCourseRepository
+    public class EFLifeCourseRepository : EFKeyedRepository<LifeCourse>, ILifeCourseRepository
     {
         public EFLifeCourseRepository(LinklivesContext context) : base(context)
         {

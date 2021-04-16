@@ -1,4 +1,6 @@
-﻿using System;
+﻿using linklives_api_dal.domain;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public abstract class BaseEFRepository<T> where T : class
+    public abstract class EFKeyedRepository<T> where T : KeyedItem
     {
         protected readonly LinklivesContext context;
 
-        protected BaseEFRepository(LinklivesContext context)
+        protected EFKeyedRepository(LinklivesContext context)
         {
             this.context = context;
         }
@@ -21,7 +23,7 @@ namespace linklives_api_dal.Repositories
         }
         public T GetByKey(string key)
         {
-            return context.Set<T>().Find(key);
+            return context.Set<T>().IncludeAll().SingleOrDefault(x => x.Key == key);
         }
 
         public IEnumerable<T> GetAll()
