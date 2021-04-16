@@ -11,7 +11,6 @@ namespace linklives_api_dal.domain
         public bool Rating { get; set; }
         public RatingDescription Description { get; set; }
         public string LinkKey { get; set; }
-        public virtual Link Link { get; set; }
     }
 
     public enum RatingDescription
