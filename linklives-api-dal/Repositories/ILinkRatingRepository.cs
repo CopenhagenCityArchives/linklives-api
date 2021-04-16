@@ -10,10 +10,10 @@ namespace linklives_api_dal.Repositories
     public interface ILinkRatingRepository
     {
         IEnumerable<LinkRating> GetAll();
-        LinkRating GetById(int linkRatingId);
+        LinkRating GetByKey(string linkRatingKey);
         void Insert(LinkRating linkRating);
         void Insert(IEnumerable<LinkRating> linkRatings);
-        void Delete(int id);
+        void Delete(string key);
         void Save();
     }
 }

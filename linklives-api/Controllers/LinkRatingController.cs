@@ -23,9 +23,9 @@ namespace linkRatinglives_api.Controllers
 
         // GET: LinkRating/5
         [HttpGet]
-        public ActionResult Get(int id)
+        public ActionResult Get(string id)
         {
-            var result = repository.GetById(id);
+            var result = repository.GetByKey(id);
             if (result != null)
             {
                 return Ok(result);
@@ -52,7 +52,7 @@ namespace linkRatinglives_api.Controllers
         // DELETE: LinkRating/5
         [HttpDelete]
         [Authorize]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
             repository.Delete(id);
             repository.Save();

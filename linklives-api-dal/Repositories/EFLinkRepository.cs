@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public class EFLinkRepository : BaseEFRepository<Link>, ILinkRepository
+    public class EFLinkRepository : EFKeyedRepository<Link>, ILinkRepository
     {
         public EFLinkRepository(LinklivesContext context) : base(context)
         {

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.domain
 {
-    public class Link
+    public class Link : KeyedItem
     {
         public int Link_id { get; set; }
-        public string Key { get; set; }
         public int Iteration { get; set; }
         public int Iteration_inner { get; set; }
         public int Method_id { get; set; }

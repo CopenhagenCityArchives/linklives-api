@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.domain
 {
-    public class LinkRating
+    public class LinkRating : KeyedItem
     {
-        public int Id { get; set; }
         public bool Rating { get; set; }
         public RatingDescription Description { get; set; }
         public string LinkKey { get; set; }
