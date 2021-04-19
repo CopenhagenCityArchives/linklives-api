@@ -72,7 +72,7 @@ namespace linklives_api
                 });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("read:messages", policy => policy.Requirements.Add(new HasScopeRequirement("read:messages", domain)));
+                options.AddPolicy("add:link", policy => policy.Requirements.Add(new HasScopeRequirement("add:link", domain)));
             });
 
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
