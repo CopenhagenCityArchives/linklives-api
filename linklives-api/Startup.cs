@@ -50,7 +50,8 @@ namespace linklives_api
                         AuthorizationCode = new OpenApiOAuthFlow
                         {
                             Scopes = new Dictionary<string, string> { { "read:links", "Read links from database" }, { "add:link", "Add new link" } },
-                            AuthorizationUrl = new Uri("https://" + Configuration["Auth0:Domain"] + "/authorize?audience=" + Configuration["Auth0:Audience"])
+                            AuthorizationUrl = new Uri("https://" + Configuration["Auth0:Domain"] + "/authorize?audience=" + Configuration["Auth0:Audience"]),
+                            TokenUrl = new Uri("https://" + Configuration["Auth0:Domain"] + "/oauth/token")
                         }
                     }
                 });
