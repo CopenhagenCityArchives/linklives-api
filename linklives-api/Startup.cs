@@ -55,6 +55,7 @@ namespace linklives_api
                         }
                     }
                 });
+                c.OperationFilter<AuthorizationOperationFilter>();
             });
             #region auth0
             string domain = $"https://{Configuration["Auth0:Domain"]}/";
