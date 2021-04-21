@@ -22,6 +22,8 @@ namespace linklives_api.Controllers
         }
         // GET: Link/5
         [HttpGet]
+        [ProducesResponseType(typeof(Link), 200)]
+        [ProducesResponseType(404)]
         public ActionResult Get(string id)
         {
             var result = repository.GetByKey(id);

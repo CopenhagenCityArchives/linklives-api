@@ -23,6 +23,8 @@ namespace linkRatinglives_api.Controllers
 
         // GET: LinkRating/5
         [HttpGet]
+        [ProducesResponseType(typeof(LinkRating), 200)]
+        [ProducesResponseType(404)]
         public ActionResult Get(string id)
         {
             var result = repository.GetByKey(id);
