@@ -21,12 +21,12 @@ namespace linklives_api.Controllers
             this.repository = repository;
         }
         // GET: Link/5
-        [HttpGet]
+        [HttpGet("{key}")]
         [ProducesResponseType(typeof(Link), 200)]
         [ProducesResponseType(404)]
-        public ActionResult Get(string id)
+        public ActionResult Get(string key)
         {
-            var result = repository.GetByKey(id);
+            var result = repository.GetByKey(key);
             if (result != null)
             {
                 return Ok(result);
@@ -68,11 +68,11 @@ namespace linklives_api.Controllers
             }
         }
         // DELETE: Link/5
-        [HttpDelete]
+        [HttpDelete("{key}")]
         [Authorize]
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string key)
         {
-            repository.Delete(id);
+            repository.Delete(key);
             repository.Save();
             return Ok();
         }
