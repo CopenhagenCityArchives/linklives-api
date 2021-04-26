@@ -15,20 +15,33 @@ namespace linklives_api.Controllers
     public class LinkController : ControllerBase
     {
         private readonly ILinkRepository repository;
-
-        public LinkController(ILinkRepository repository)
+        private readonly IPersonAppearanceRepository pa_repo;
+        public LinkController(ILinkRepository repository, IPersonAppearanceRepository pa_repo)
         {
             this.repository = repository;
+            this.pa_repo = pa_repo;
         }
         // GET: Link/5
         [HttpGet("{key}")]
         [ProducesResponseType(typeof(Link), 200)]
+        [ProducesResponseType(typeof(Link), 206)]
         [ProducesResponseType(404)]
         public ActionResult Get(string key)
         {
             var result = repository.GetByKey(key);
             if (result != null)
             {
+                //Go fetch person appearance data
+                try
+                {
+                    result.GetPersonAppearances(pa_repo);
+                }
+                catch (Exception)
+                {
+                    //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
+                    return StatusCode(206, result);
+                }
+                
                 return Ok(result);
             }
             return NotFound();

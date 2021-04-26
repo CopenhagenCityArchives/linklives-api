@@ -1,5 +1,7 @@
-﻿using System;
+﻿using linklives_api_dal.Repositories;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,5 +24,14 @@ namespace linklives_api_dal.domain
         public string Method_description { get; set; }
         public string LifeCourseKey { get; set; }
         public virtual IEnumerable<LinkRating> Ratings { get; set; }
+        [NotMapped]
+        public PersonAppearance Pa_1 { get; set; }
+        [NotMapped]
+        public PersonAppearance Pa_2 { get; set; }
+        public void GetPersonAppearances(IPersonAppearanceRepository repo)
+        {
+            Pa_1 = repo.GetById(Pa_id1);
+            Pa_2 = repo.GetById(Pa_id2);
+        }
     }
 }

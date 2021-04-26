@@ -84,6 +84,7 @@ namespace linklives_api
             services.AddScoped<ILifeCourseRepository, EFLifeCourseRepository>();
             services.AddScoped<ILinkRepository, EFLinkRepository>();
             services.AddScoped<ILinkRatingRepository, EFLinkRatingRepository>();
+            services.AddScoped<IPersonAppearanceRepository, ESPersonAppearanceRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

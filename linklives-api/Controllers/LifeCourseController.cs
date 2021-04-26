@@ -15,20 +15,37 @@ namespace linklives_api.Controllers
     public class LifeCourseController : ControllerBase
     {
         private readonly ILifeCourseRepository repository;
+        private readonly IPersonAppearanceRepository pa_repo;
 
-        public LifeCourseController(ILifeCourseRepository repository)
+        public LifeCourseController(ILifeCourseRepository repository, IPersonAppearanceRepository pa_repo)
         {
             this.repository = repository;
+            this.pa_repo = pa_repo;
         }
         // GET: LifeCourse/5
         [HttpGet("{key}")]
         [ProducesResponseType(typeof(LifeCourse),200)]
+        [ProducesResponseType(typeof(LifeCourse), 206)]
         [ProducesResponseType(404)]
         public ActionResult Get(string key)
         {
             var result = repository.GetByKey(key);
             if (result != null)
             {
+                try
+                {
+                    //Go fetch Person Appearance data
+                    foreach (var link in result.Links)
+                    {
+                        link.GetPersonAppearances(pa_repo);
+                    }
+                }
+                catch (Exception)
+                {
+                    //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
+                    return StatusCode(206, result);
+                }
+               
                 return Ok(result);
             }
             return NotFound();
