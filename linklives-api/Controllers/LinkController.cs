@@ -66,7 +66,7 @@ namespace linklives_api.Controllers
 
         // PUT: Link/BulkInsert
         [HttpPut("BulkInsert")]
-        [Authorize]
+        //[Authorize]
         public ActionResult BulkInsert([FromBody] IEnumerable<Link> links)
         {
             try
