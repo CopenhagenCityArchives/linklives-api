@@ -18,6 +18,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using linklives_api_dal;
 using linklives_api_dal.Repositories;
+using Elasticsearch.Net;
 
 namespace linklives_api
 {
@@ -81,10 +82,15 @@ namespace linklives_api
 
             services.AddDbContext<LinklivesContext>(options =>
            options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+            var settings = new ConnectionConfiguration(new Uri("https://data-dev.link-lives.dk"))
+                .RequestTimeout(TimeSpan.FromMinutes(2));
+            services.AddSingleton<ElasticLowLevelClient>(new ElasticLowLevelClient(settings));
+
             services.AddScoped<ILifeCourseRepository, EFLifeCourseRepository>();
             services.AddScoped<ILinkRepository, EFLinkRepository>();
             services.AddScoped<ILinkRatingRepository, EFLinkRatingRepository>();
             services.AddScoped<IPersonAppearanceRepository, ESPersonAppearanceRepository>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

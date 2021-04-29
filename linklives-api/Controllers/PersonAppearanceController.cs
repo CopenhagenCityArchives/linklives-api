@@ -22,10 +22,9 @@ namespace linklives_api.Controllers
         }
 
         [HttpGet("{id}")]
-        [HttpGet("{key}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public ActionResult Get(int id)
+        public ActionResult Get(string id)
         {
             var result = repository.GetRawJsonById(id);
             if (result != null)
