@@ -30,8 +30,8 @@ namespace linklives_api_dal.domain
         public PersonAppearance Pa_2 { get; set; }
         public void GetPersonAppearances(IPersonAppearanceRepository repo)
         {
-            Pa_1 = repo.GetById(Pa_id1);
-            Pa_2 = repo.GetById(Pa_id2);
+            Pa_1 = repo.GetById($"{Source_id1}-{Pa_id1}");
+            Pa_2 = repo.GetById($"{Source_id2}-{Pa_id2}");
         }
     }
 }

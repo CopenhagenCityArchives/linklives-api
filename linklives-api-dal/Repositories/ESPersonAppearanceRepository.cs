@@ -18,30 +18,38 @@ namespace linklives_api_dal.Repositories
             this.client = client;
         }
 
-        public PersonAppearance GetById(int PaId)
+        public PersonAppearance GetById(string Id)
         {
-            return JsonSerializer.Deserialize<PersonAppearance>(GetRawJsonById(PaId));
+            return JsonSerializer.Deserialize<PersonAppearance>(GetRawJsonById(Id));
         }
 
-        public string GetRawJsonById(int PaId)
+        public string GetRawJsonById(string Id)
         {
-            throw new NotImplementedException();
             //TODO: Write proper query
-            var searchResponse = client.Search<StringResponse>("people", PostData.Serializable(new
+            var query = @"
             {
-                from = 0,
-                size = 10,
-                query = new
-                {
-                    match = new
-                    {
-                        firstName = new
-                        {
-                            query = "Martijn"
-                        }
+                ""from"": 0,
+                ""size"": 100,
+                ""query"": {
+                            ""bool"": {
+                                ""must"": [
+                                    {
+                                    ""nested"": {
+                                        ""path"": ""person_appearance"",
+                                    ""query"": {
+                                            ""term"": {
+                                                ""person_appearance.id"": {
+                                                    ""value"": " + Id + @"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                        ]
                     }
                 }
-            }));
+            }";
+            var searchResponse = client.Search<StringResponse>("pas", query);
 
             return searchResponse.Body;
         }
