@@ -70,7 +70,7 @@ namespace linklives_api.Controllers
 
         // PUT: LifeCourse/BulkInsert
         [HttpPut("BulkInsert")]
-        [Authorize]
+        //[Authorize]
         public ActionResult BulkInsert([FromBody]IEnumerable<LifeCourse> lifeCourses)
         {
             try
