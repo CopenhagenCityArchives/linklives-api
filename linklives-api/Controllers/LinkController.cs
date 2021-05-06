@@ -47,10 +47,10 @@ namespace linklives_api.Controllers
             return NotFound();
         }
 
-        // PUT: Link/
-        [HttpPut]
+        // POST: Link/
+        [HttpPost]
         [Authorize]
-        public ActionResult Put([FromBody] Link link)
+        public ActionResult Post([FromBody] Link link)
         {
             try
             {
@@ -64,8 +64,8 @@ namespace linklives_api.Controllers
             }
         }
 
-        // PUT: Link/BulkInsert
-        [HttpPut("BulkInsert")]
+        // POST: Link/BulkInsert
+        [HttpPost("BulkInsert")]
         //[Authorize]
         public ActionResult BulkInsert([FromBody] IEnumerable<Link> links)
         {
