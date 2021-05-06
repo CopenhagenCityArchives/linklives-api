@@ -68,8 +68,8 @@ namespace linklives_api.Controllers
             }
         }
 
-        // POST: LifeCourse/BulkInsert
-        [HttpPost("BulkInsert")]
+        // PUT: LifeCourse/BulkInsert
+        [HttpPut("BulkInsert")]
         //[Authorize]
         public ActionResult BulkInsert([FromBody]IEnumerable<LifeCourse> lifeCourses)
         {
