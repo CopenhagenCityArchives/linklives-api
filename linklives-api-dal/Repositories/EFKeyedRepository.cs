@@ -38,7 +38,11 @@ namespace linklives_api_dal.Repositories
 
         public void Insert(IEnumerable<T> entitties)
         {
-            context.Set<T>().AddRange(entitties);
+            var newEntryKeys = entitties.Select(x => x.Key).Distinct().ToArray();
+            var keysExiststingInDb = context.Set<T>().Where(x => newEntryKeys.Contains(x.Key)).Select(x => x.Key).ToArray();
+            var newEntities = entitties.Where(x => !keysExiststingInDb.Contains(x.Key));
+
+            context.Set<T>().AddRange(newEntities);
         }
         public void Save()
         {
