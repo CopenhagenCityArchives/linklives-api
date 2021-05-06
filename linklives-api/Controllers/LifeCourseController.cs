@@ -51,10 +51,10 @@ namespace linklives_api.Controllers
             return NotFound();
         }
 
-        // PUT: LifeCourse/
-        [HttpPut]
+        // POST: LifeCourse/
+        [HttpPost]
         [Authorize]
-        public ActionResult Put([FromBody]LifeCourse lifeCourse)
+        public ActionResult Post([FromBody]LifeCourse lifeCourse)
         {
             try
             {
@@ -68,8 +68,8 @@ namespace linklives_api.Controllers
             }
         }
 
-        // PUT: LifeCourse/BulkInsert
-        [HttpPut("BulkInsert")]
+        // POST: LifeCourse/BulkInsert
+        [HttpPost("BulkInsert")]
         //[Authorize]
         public ActionResult BulkInsert([FromBody]IEnumerable<LifeCourse> lifeCourses)
         {

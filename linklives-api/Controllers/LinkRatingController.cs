@@ -35,10 +35,10 @@ namespace linkRatinglives_api.Controllers
             return NotFound();
         }
 
-        // PUT: LinkRating/
-        [HttpPut]
+        // POST: LinkRating/
+        [HttpPost]
         [Authorize]
-        public ActionResult Put([FromBody] LinkRating linkRating)
+        public ActionResult Post([FromBody] LinkRating linkRating)
         {
             try
             {
