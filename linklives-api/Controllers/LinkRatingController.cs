@@ -46,9 +46,9 @@ namespace linkRatinglives_api.Controllers
                 repository.Save();
                 return Ok();
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
         // DELETE: LinkRating/5
