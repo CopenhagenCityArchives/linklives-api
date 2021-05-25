@@ -62,9 +62,9 @@ namespace linklives_api.Controllers
                 repository.Save();
                 return Ok();
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
 
@@ -79,9 +79,9 @@ namespace linklives_api.Controllers
                 repository.Save();
                 return Ok();
             }
-            catch
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
         // DELETE: LifeCourse/5
