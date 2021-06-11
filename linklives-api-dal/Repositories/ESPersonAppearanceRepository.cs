@@ -25,7 +25,6 @@ namespace linklives_api_dal.Repositories
 
         public string GetRawJsonById(string Id)
         {
-            //TODO: Write proper query
             var query = @"
             {
                 ""from"": 0,
@@ -39,7 +38,7 @@ namespace linklives_api_dal.Repositories
                                     ""query"": {
                                             ""term"": {
                                                 ""person_appearance.id"": {
-                                                    ""value"": " + Id + @"
+                                                    ""value"": """ + Id + @"""
                                                 }
                                             }
                                         }
