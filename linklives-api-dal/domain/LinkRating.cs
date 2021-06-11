@@ -8,14 +8,8 @@ namespace linklives_api_dal.domain
 {
     public class LinkRating : KeyedItem
     {
-        public bool Rating { get; set; }
-        public RatingDescription Description { get; set; }
+        public int RatingId { get; set; }
+        public virtual RatingChoice Rating { get; set; }
         public string LinkKey { get; set; }
-    }
-
-    public enum RatingDescription
-    {
-        accurate,
-        notaccurate
     }
 }
