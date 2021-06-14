@@ -90,6 +90,7 @@ namespace linklives_api
             services.AddScoped<ILinkRepository, EFLinkRepository>();
             services.AddScoped<ILinkRatingRepository, EFLinkRatingRepository>();
             services.AddScoped<IPersonAppearanceRepository, ESPersonAppearanceRepository>();
+            services.AddScoped<IRatingChoiceRepository, EFRatingChoiceRepository>();
             
         }
 
