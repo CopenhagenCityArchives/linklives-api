@@ -19,6 +19,7 @@ namespace linklives_api.Controllers
             this.repository = repository;
         }
 
+        [Route("~/[controller]s")]
         [HttpGet()]
         [ProducesResponseType(typeof(List<RatingOption>), 200)]
         public IActionResult Get()
