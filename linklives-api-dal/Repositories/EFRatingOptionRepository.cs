@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public class EFRatingChoiceRepository : IRatingChoiceRepository
+    public class EFRatingOptionRepository : IRatingOptionRepository
     {
         private readonly LinklivesContext context;
-        public IEnumerable<RatingChoice> GetAll()
+        public IEnumerable<RatingOption> GetAll()
         {
-            return context.RatingChoices;
+            return context.RatingOptions;
         }
 
-        public RatingChoice GetById(int id)
+        public RatingOption GetById(int id)
         {
-            return context.RatingChoices.Single(x => x.Id == id);
+            return context.RatingOptions.Single(x => x.Id == id);
         }
     }
 }

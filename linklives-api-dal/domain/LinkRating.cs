@@ -9,7 +9,7 @@ namespace linklives_api_dal.domain
     public class LinkRating : KeyedItem
     {
         public int RatingId { get; set; }
-        public virtual RatingChoice Rating { get; set; }
+        public virtual RatingOption Rating { get; set; }
         public string LinkKey { get; set; }
     }
 }
