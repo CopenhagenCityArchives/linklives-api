@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public interface IRatingChoiceRepository
+    public interface IRatingOptionRepository
     {
-        IEnumerable<RatingChoice> GetAll();
-        RatingChoice GetById(int id);
+        IEnumerable<RatingOption> GetAll();
+        RatingOption GetById(int id);
     }
 }

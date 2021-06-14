@@ -13,7 +13,7 @@ namespace linklives_api_dal
         public DbSet<LifeCourse> LifeCourses { get; set; }
         public DbSet<Link> Links { get; set; }
         public DbSet<LinkRating> LinkRatings { get; set; }
-        public DbSet<RatingChoice> RatingChoices { get; set; }
+        public DbSet<RatingOption> RatingOptions { get; set; }
         public LinklivesContext(DbContextOptions<LinklivesContext> options) : base(options)
         {
 
@@ -40,7 +40,7 @@ namespace linklives_api_dal
                 entity.HasOne(x => x.Rating).WithMany().HasForeignKey(x => x.RatingId);
             });
 
-            modelBuilder.Entity<RatingChoice>(entity =>
+            modelBuilder.Entity<RatingOption>(entity =>
             {
                 entity.HasKey(x => x.Id);
             });
