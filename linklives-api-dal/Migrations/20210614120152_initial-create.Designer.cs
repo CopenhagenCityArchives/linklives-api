@@ -8,15 +8,15 @@ using linklives_api_dal;
 namespace linklives_api_dal.Migrations
 {
     [DbContext(typeof(LinklivesContext))]
-    [Migration("20210415113417_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210614120152_initial-create")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.5");
+                .HasAnnotation("ProductVersion", "5.0.7");
 
             modelBuilder.Entity("linklives_api_dal.domain.LifeCourse", b =>
                 {
@@ -84,47 +84,71 @@ namespace linklives_api_dal.Migrations
 
             modelBuilder.Entity("linklives_api_dal.domain.LinkRating", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Description")
-                        .HasColumnType("int");
+                    b.Property<string>("Key")
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("LinkKey")
                         .HasColumnType("varchar(767)");
 
-                    b.Property<bool>("Rating")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<int>("RatingId")
+                        .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("Key");
 
                     b.HasIndex("LinkKey");
+
+                    b.HasIndex("RatingId");
 
                     b.ToTable("LinkRatings");
                 });
 
+            modelBuilder.Entity("linklives_api_dal.domain.RatingOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Heading")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RatingOptions");
+                });
+
             modelBuilder.Entity("linklives_api_dal.domain.Link", b =>
                 {
-                    b.HasOne("linklives_api_dal.domain.LifeCourse", "LifeCourse")
+                    b.HasOne("linklives_api_dal.domain.LifeCourse", null)
                         .WithMany("Links")
                         .HasForeignKey("LifeCourseKey");
-
-                    b.Navigation("LifeCourse");
                 });
 
             modelBuilder.Entity("linklives_api_dal.domain.LinkRating", b =>
                 {
-                    b.HasOne("linklives_api_dal.domain.Link", "Link")
-                        .WithMany()
+                    b.HasOne("linklives_api_dal.domain.Link", null)
+                        .WithMany("Ratings")
                         .HasForeignKey("LinkKey");
 
-                    b.Navigation("Link");
+                    b.HasOne("linklives_api_dal.domain.RatingOption", "Rating")
+                        .WithMany()
+                        .HasForeignKey("RatingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Rating");
                 });
 
             modelBuilder.Entity("linklives_api_dal.domain.LifeCourse", b =>
                 {
                     b.Navigation("Links");
+                });
+
+            modelBuilder.Entity("linklives_api_dal.domain.Link", b =>
+                {
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

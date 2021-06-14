@@ -3,7 +3,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace linklives_api_dal.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -17,6 +17,20 @@ namespace linklives_api_dal.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LifeCourses", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RatingOptions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(type: "text", nullable: true),
+                    Heading = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RatingOptions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,27 +67,36 @@ namespace linklives_api_dal.Migrations
                 name: "LinkRatings",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Rating = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Description = table.Column<int>(type: "int", nullable: false),
+                    Key = table.Column<string>(type: "varchar(767)", nullable: false),
+                    RatingId = table.Column<int>(type: "int", nullable: false),
                     LinkKey = table.Column<string>(type: "varchar(767)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LinkRatings", x => x.Id);
+                    table.PrimaryKey("PK_LinkRatings", x => x.Key);
                     table.ForeignKey(
                         name: "FK_LinkRatings_Links_LinkKey",
                         column: x => x.LinkKey,
                         principalTable: "Links",
                         principalColumn: "Key",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_LinkRatings_RatingOptions_RatingId",
+                        column: x => x.RatingId,
+                        principalTable: "RatingOptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_LinkRatings_LinkKey",
                 table: "LinkRatings",
                 column: "LinkKey");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LinkRatings_RatingId",
+                table: "LinkRatings",
+                column: "RatingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Links_LifeCourseKey",
@@ -88,6 +111,9 @@ namespace linklives_api_dal.Migrations
 
             migrationBuilder.DropTable(
                 name: "Links");
+
+            migrationBuilder.DropTable(
+                name: "RatingOptions");
 
             migrationBuilder.DropTable(
                 name: "LifeCourses");
