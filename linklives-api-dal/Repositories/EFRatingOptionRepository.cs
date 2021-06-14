@@ -10,6 +10,12 @@ namespace linklives_api_dal.Repositories
     public class EFRatingOptionRepository : IRatingOptionRepository
     {
         private readonly LinklivesContext context;
+
+        public EFRatingOptionRepository(LinklivesContext context)
+        {
+            this.context = context;
+        }
+
         public IEnumerable<RatingOption> GetAll()
         {
             return context.RatingOptions;
