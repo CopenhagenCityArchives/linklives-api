@@ -58,6 +58,10 @@ namespace linklives_api
                 });
                 c.OperationFilter<AuthorizationOperationFilter>();
             });
+            #region CORS
+            services.AddCors();
+            #endregion
+
             #region auth0
             string domain = $"https://{Configuration["Auth0:Domain"]}/";
             services
@@ -113,6 +117,10 @@ namespace linklives_api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(
+                options => options.WithOrigins("http://example.com").AllowAnyMethod()
+                );
 
             //app.UseHttpsRedirection();
 
