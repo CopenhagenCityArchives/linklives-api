@@ -34,7 +34,9 @@ namespace linklives_api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            #region CORS
+            services.AddCors();
+            #endregion
             services.AddControllers();
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -57,10 +59,7 @@ namespace linklives_api
                     }
                 });
                 c.OperationFilter<AuthorizationOperationFilter>();
-            });
-            #region CORS
-            services.AddCors();
-            #endregion
+            });            
 
             #region auth0
             string domain = $"https://{Configuration["Auth0:Domain"]}/";
@@ -101,6 +100,10 @@ namespace linklives_api
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
             #region Swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -118,9 +121,7 @@ namespace linklives_api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(
-                options => options.WithOrigins("http://example.com").AllowAnyMethod()
-                );
+            
 
             //app.UseHttpsRedirection();
 
