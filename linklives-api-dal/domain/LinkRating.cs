@@ -11,5 +11,6 @@ namespace linklives_api_dal.domain
         public int RatingId { get; set; }
         public virtual RatingOption Rating { get; set; }
         public string LinkKey { get; set; }
+        public string User { get; set; }
     }
 }
