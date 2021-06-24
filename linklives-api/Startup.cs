@@ -100,6 +100,7 @@ namespace linklives_api
             services.AddScoped<ILinkRatingRepository, EFLinkRatingRepository>();
             services.AddScoped<IPersonAppearanceRepository, ESPersonAppearanceRepository>();
             services.AddScoped<IRatingOptionRepository, EFRatingOptionRepository>();
+            services.AddScoped<ISourceRepository, ESSourceRepository>();
             
         }
 
