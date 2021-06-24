@@ -1,4 +1,5 @@
 ﻿using linklives_api_dal.domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,11 @@ namespace linklives_api_dal.Repositories
     {
         public EFLinkRatingRepository(LinklivesContext context) : base(context)
         {
+        }
+
+        public List<LinkRating> GetbyLinkKey(string linkKey)
+        {
+            return context.LinkRatings.IncludeAll().Where(x => x.LinkKey == linkKey).ToList();
         }
     }
 }

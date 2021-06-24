@@ -34,6 +34,18 @@ namespace linkRatinglives_api.Controllers
             }
             return NotFound();
         }
+        [HttpGet("~/Link/{key}/Ratings")]
+        [ProducesResponseType(typeof(List<LinkRating>), 200)]
+        [ProducesResponseType(404)]
+        public ActionResult GetByLinkKey(string key)
+        {
+            var result = repository.GetbyLinkKey(key);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
 
         // POST: LinkRating/
         [HttpPost]

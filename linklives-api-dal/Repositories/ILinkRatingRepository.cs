@@ -11,6 +11,7 @@ namespace linklives_api_dal.Repositories
     {
         IEnumerable<LinkRating> GetAll();
         LinkRating GetByKey(string linkRatingKey);
+        List<LinkRating> GetbyLinkKey(string linkKey);
         void Insert(LinkRating linkRating);
         void Insert(IEnumerable<LinkRating> linkRatings);
         void Delete(string key);
