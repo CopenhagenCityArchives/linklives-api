@@ -16,11 +16,13 @@ namespace linklives_api.Controllers
     {
         private readonly ILifeCourseRepository repository;
         private readonly IPersonAppearanceRepository pa_repo;
+        private readonly ISourceRepository source_repo;
 
-        public LifeCourseController(ILifeCourseRepository repository, IPersonAppearanceRepository pa_repo)
+        public LifeCourseController(ILifeCourseRepository repository, IPersonAppearanceRepository pa_repo, ISourceRepository source_repo)
         {
             this.repository = repository;
             this.pa_repo = pa_repo;
+            this.source_repo = source_repo;
         }
         // GET: LifeCourse/5
         [HttpGet("{key}")]
@@ -34,11 +36,17 @@ namespace linklives_api.Controllers
             {
                 try
                 {
+                    //Fetch a cache of all our sources
+                    var sources = source_repo.GetAll();
                     //Go fetch Person Appearance data
                     foreach (var link in result.Links)
                     {
                         link.GetPersonAppearances(pa_repo);
+                        link.Pa_1.Source = sources.SingleOrDefault(X => X.Source_id == link.Pa_1.Source_id);
+                        link.Pa_2.Source = sources.SingleOrDefault(X => X.Source_id == link.Pa_2.Source_id);
                     }
+
+
                 }
                 catch (Exception)
                 {
