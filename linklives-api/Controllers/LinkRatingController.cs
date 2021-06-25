@@ -49,7 +49,7 @@ namespace linkRatinglives_api.Controllers
 
         // POST: LinkRating/
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public ActionResult Post([FromBody] LinkRating linkRating)
         {
             try
