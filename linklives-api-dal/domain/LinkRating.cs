@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -10,7 +11,8 @@ namespace linklives_api_dal.domain
 {
     public class LinkRating
     {
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }
         [DataMember, Required(AllowEmptyStrings = false, ErrorMessage = "Must have valid rating id")]
         public int RatingId { get; set; }
         [DataMember()]
