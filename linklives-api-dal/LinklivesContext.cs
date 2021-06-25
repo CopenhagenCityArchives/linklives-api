@@ -36,7 +36,7 @@ namespace linklives_api_dal
 
             modelBuilder.Entity<LinkRating>(entity =>
             {
-                entity.HasKey(x => x.Key);
+                entity.HasKey(x => x.Id);
                 entity.HasOne(x => x.Rating).WithMany().HasForeignKey(x => x.RatingId);
             });
 
