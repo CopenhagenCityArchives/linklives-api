@@ -22,12 +22,12 @@ namespace linkRatinglives_api.Controllers
         }
 
         // GET: LinkRating/5
-        [HttpGet("{key}")]
+        [HttpGet("{id}")]
         [ProducesResponseType(typeof(LinkRating), 200)]
         [ProducesResponseType(404)]
         public ActionResult Get(int id)
         {
-            var result = repository.GetByKey(id);
+            var result = repository.GetById(id);
             if (result != null)
             {
                 return Ok(result);
@@ -64,9 +64,9 @@ namespace linkRatinglives_api.Controllers
             }
         }
         // DELETE: LinkRating/5
-        [HttpDelete("{key}")]
+        [HttpDelete("{id}")]
         [Authorize]
-        public ActionResult Delete(int id)
+        public ActionResultkey Delete(int id)
         {
             repository.Delete(id);
             repository.Save();

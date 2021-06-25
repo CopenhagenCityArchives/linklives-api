@@ -25,7 +25,7 @@ namespace linklives_api_dal.Repositories
             var entity = context.LinkRatings.Find(id);
             context.LinkRatings.Remove(entity);
         }
-        public LinkRating GetByKey(int id)
+        public LinkRating GetById(int id)
         {
             return context.LinkRatings.IncludeAll().SingleOrDefault(x => x.Id == id);
         }
