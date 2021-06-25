@@ -25,9 +25,9 @@ namespace linkRatinglives_api.Controllers
         [HttpGet("{key}")]
         [ProducesResponseType(typeof(LinkRating), 200)]
         [ProducesResponseType(404)]
-        public ActionResult Get(string key)
+        public ActionResult Get(int id)
         {
-            var result = repository.GetByKey(key);
+            var result = repository.GetByKey(id);
             if (result != null)
             {
                 return Ok(result);
@@ -66,9 +66,9 @@ namespace linkRatinglives_api.Controllers
         // DELETE: LinkRating/5
         [HttpDelete("{key}")]
         [Authorize]
-        public ActionResult Delete(string key)
+        public ActionResult Delete(int id)
         {
-            repository.Delete(key);
+            repository.Delete(id);
             repository.Save();
             return Ok();
         }
