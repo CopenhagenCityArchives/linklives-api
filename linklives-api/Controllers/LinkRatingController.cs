@@ -66,7 +66,7 @@ namespace linkRatinglives_api.Controllers
         // DELETE: LinkRating/5
         [HttpDelete("{id}")]
         [Authorize]
-        public ActionResultkey Delete(int id)
+        public ActionResult Delete(int id)
         {
             repository.Delete(id);
             repository.Save();
