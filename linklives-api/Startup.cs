@@ -81,10 +81,7 @@ namespace linklives_api
                         NameClaimType = ClaimTypes.NameIdentifier
                     };
                 });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("add:link", policy => policy.Requirements.Add(new HasScopeRequirement("add:link", domain)));
-            });
+            services.AddAuthorization();
 
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
             #endregion
