@@ -67,19 +67,21 @@ namespace linklives_api_dal.Migrations
                 name: "LinkRatings",
                 columns: table => new
                 {
-                    Key = table.Column<string>(type: "varchar(767)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     RatingId = table.Column<int>(type: "int", nullable: false),
-                    LinkKey = table.Column<string>(type: "varchar(767)", nullable: true)
+                    LinkKey = table.Column<string>(type: "varchar(767)", nullable: false),
+                    User = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LinkRatings", x => x.Key);
+                    table.PrimaryKey("PK_LinkRatings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_LinkRatings_Links_LinkKey",
                         column: x => x.LinkKey,
                         principalTable: "Links",
                         principalColumn: "Key",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_LinkRatings_RatingOptions_RatingId",
                         column: x => x.RatingId,
