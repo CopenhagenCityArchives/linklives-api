@@ -4,6 +4,8 @@ namespace linklives_api_dal.domain
 {
     public class PersonAppearance
     {
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
         [JsonProperty(PropertyName = "name_display")]
         public string Name_display { get; set; }
         [JsonProperty(PropertyName = "birthyear_display")]
@@ -19,5 +21,10 @@ namespace linklives_api_dal.domain
         [JsonProperty(PropertyName = "source_id")]
         public string Source_id { get; set; }
         public Source Source { get; set; }
+    }
+    public class PAIndex
+    {
+        [JsonProperty(PropertyName = "person_appearance")]
+        public PersonAppearance Person_appearance { get; set; }
     }
 }

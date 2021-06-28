@@ -1,5 +1,5 @@
-﻿using Elasticsearch.Net;
-using linklives_api_dal.domain;
+﻿using linklives_api_dal.domain;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,29 +11,19 @@ namespace linklives_api_dal.Repositories
 {
     public class ESSourceRepository : ISourceRepository
     {
-        private readonly ElasticLowLevelClient client;
+        private readonly ElasticClient client;
 
-        public ESSourceRepository(ElasticLowLevelClient client)
+        public ESSourceRepository(ElasticClient client)
         {
             this.client = client;
         }
 
         public List<Source> GetAll()
         {
-            return JsonSerializer.Deserialize<List<Source>>(GetAllRawJson());
-        }
-
-        public string GetAllRawJson()
-        {
-            var query = @"
-            {               
-                ""query"": {
-                    ""match_all"": { }
-                            }
-             }";
-            var searchResponse = client.Search<StringResponse>("sources", query);
-
-            return searchResponse.Body;
+            var searchResponse = client.Search<Source>(s => s
+            .Index("sources")
+            .Query(q => q.MatchAll()));
+            return searchResponse.Documents.ToList();
         }
     }
 }

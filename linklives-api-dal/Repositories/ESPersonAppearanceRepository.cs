@@ -1,5 +1,5 @@
-﻿using Elasticsearch.Net;
-using linklives_api_dal.domain;
+﻿using linklives_api_dal.domain;
+using Nest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,46 +11,27 @@ namespace linklives_api_dal.Repositories
 {
     public class ESPersonAppearanceRepository : IPersonAppearanceRepository
     {
-        private readonly ElasticLowLevelClient client;
+        private readonly ElasticClient client;
 
-        public ESPersonAppearanceRepository(ElasticLowLevelClient client)
+        public ESPersonAppearanceRepository(ElasticClient client)
         {
             this.client = client;
         }
 
         public PersonAppearance GetById(string Id)
         {
-            return JsonSerializer.Deserialize<PersonAppearance>(GetRawJsonById(Id));
-        }
-
-        public string GetRawJsonById(string Id)
-        {
-            var query = @"
-            {
-                ""from"": 0,
-                ""size"": 100,
-                ""query"": {
-                            ""bool"": {
-                                ""must"": [
-                                    {
-                                    ""nested"": {
-                                        ""path"": ""person_appearance"",
-                                    ""query"": {
-                                            ""term"": {
-                                                ""person_appearance.id"": {
-                                                    ""value"": """ + Id + @"""
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                        ]
-                    }
-                }
-            }";
-            var searchResponse = client.Search<StringResponse>("pas", query);
-
-            return searchResponse.Body;
+            var searchResponse = client.Search<PAIndex>(s => s
+            .Index("pas")
+            .From(0)
+            .Size(100)
+            .Query(q => q
+                    .Nested(n => n
+                    .Path("person_appearance")
+                    .Query(nq => nq
+                        .Terms(t => t
+                            .Field(f => f.Person_appearance.Id)
+                            .Terms(Id))))));
+            return searchResponse.Documents.SingleOrDefault().Person_appearance;
         }
     }
 }
