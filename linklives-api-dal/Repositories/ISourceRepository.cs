@@ -9,7 +9,6 @@ namespace linklives_api_dal.Repositories
 {
     public interface ISourceRepository
     {
-        public string GetAllRawJson();
         public List<Source> GetAll();
     }
 }

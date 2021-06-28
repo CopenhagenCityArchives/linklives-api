@@ -18,7 +18,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using linklives_api_dal;
 using linklives_api_dal.Repositories;
-using Elasticsearch.Net;
+using Nest;
 
 namespace linklives_api
 {
@@ -88,9 +88,10 @@ namespace linklives_api
 
             services.AddDbContext<LinklivesContext>(options =>
            options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
-            var settings = new ConnectionConfiguration(new Uri("https://data-dev.link-lives.dk"))
-                .RequestTimeout(TimeSpan.FromMinutes(2));
-            services.AddSingleton<ElasticLowLevelClient>(new ElasticLowLevelClient(settings));
+            var settings = new ConnectionSettings(new Uri(Configuration["ElasticSearch:URL"]))
+                .RequestTimeout(TimeSpan.FromMinutes(2))
+                .DisableDirectStreaming();
+            services.AddSingleton<ElasticClient>(new ElasticClient(settings));
 
             services.AddScoped<ILifeCourseRepository, EFLifeCourseRepository>();
             services.AddScoped<ILinkRepository, EFLinkRepository>();

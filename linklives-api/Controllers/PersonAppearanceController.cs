@@ -26,7 +26,7 @@ namespace linklives_api.Controllers
         [ProducesResponseType(404)]
         public ActionResult Get(string id)
         {
-            var result = repository.GetRawJsonById(id);
+            var result = repository.GetById(id);
             if (result != null)
             {
                 return Ok(result);
