@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace linklives_api_dal.domain
@@ -21,5 +22,7 @@ namespace linklives_api_dal.domain
         public string LinkKey { get; set; }
         [DataMember, Required(AllowEmptyStrings = false, ErrorMessage = "Must have valid user id")]
         public string User { get; set; }
+        [JsonIgnore]
+        public virtual Link Link { get; set; }
     }
 }

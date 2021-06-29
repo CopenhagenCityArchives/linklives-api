@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace linklives_api_dal.domain
@@ -28,6 +29,8 @@ namespace linklives_api_dal.domain
         public PersonAppearance Pa_1 { get; set; }
         [NotMapped]
         public PersonAppearance Pa_2 { get; set; }
+        [JsonIgnore]
+        public virtual LifeCourse LifeCourse { get; set; }
         public void GetPersonAppearances(IPersonAppearanceRepository repo)
         {
             Pa_1 = repo.GetById($"{Source_id1}-{Pa_id1}");
