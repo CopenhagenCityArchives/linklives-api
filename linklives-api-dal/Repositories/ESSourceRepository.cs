@@ -20,10 +20,10 @@ namespace linklives_api_dal.Repositories
 
         public List<Source> GetAll()
         {
-            var searchResponse = client.Search<Source>(s => s
+            var searchResponse = client.Search<SourceIndex>(s => s
             .Index("sources")
             .Query(q => q.MatchAll()));
-            return searchResponse.Documents.ToList();
+            return searchResponse.Documents.Select(x => x.Source).ToList();
         }
     }
 }
