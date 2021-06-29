@@ -11,6 +11,7 @@ namespace linklives_api_dal.Repositories
     {
         IEnumerable<LifeCourse> GetAll();
         LifeCourse GetByKey(string lifeCourseKey);
+        IEnumerable<LifeCourse> GetByUserRatings(string userId);
         void Insert(LifeCourse lifeCourse);
         void Insert(IEnumerable<LifeCourse> lifeCourses);
         void Delete(string lifeCourseKey);

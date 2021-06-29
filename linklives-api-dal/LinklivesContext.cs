@@ -25,13 +25,13 @@ namespace linklives_api_dal
             modelBuilder.Entity<LifeCourse>(entity =>
             {
                 entity.HasKey(x => x.Key);
-                entity.HasMany(x => x.Links).WithOne().HasForeignKey(x => x.LifeCourseKey);
+                entity.HasMany(x => x.Links).WithOne(x => x.LifeCourse).HasForeignKey(x => x.LifeCourseKey);
             });
 
             modelBuilder.Entity<Link>(entity =>
             {
                 entity.HasKey(x => x.Key);
-                entity.HasMany(x=> x.Ratings).WithOne().HasForeignKey(x => x.LinkKey);
+                entity.HasMany(x=> x.Ratings).WithOne(x => x.Link).HasForeignKey(x => x.LinkKey);
             });
 
             modelBuilder.Entity<LinkRating>(entity =>

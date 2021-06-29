@@ -12,5 +12,10 @@ namespace linklives_api_dal.Repositories
         public EFLifeCourseRepository(LinklivesContext context) : base(context)
         {
         }
+
+        public IEnumerable<LifeCourse> GetByUserRatings(string userId)
+        {
+            return context.LinkRatings.Where(lr => lr.User == userId).Select(lr => lr.Link.LifeCourse).Distinct();
+        }
     }
 }

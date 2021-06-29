@@ -58,6 +58,18 @@ namespace linklives_api.Controllers
             }
             return NotFound();
         }
+        [HttpGet("~/user/lifecourses/{userId}")]
+        [ProducesResponseType(typeof(LifeCourse), 200)]
+        [ProducesResponseType(404)]
+        public ActionResult GetByUserid(string userId)
+        {
+            var result = repository.GetByUserRatings(userId);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
 
         // POST: LifeCourse/
         [HttpPost]
