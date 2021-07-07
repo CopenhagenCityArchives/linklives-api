@@ -10,16 +10,23 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.domain
 {
-    public class LinkRating
+    public class PostLinkRating
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int? Id { get; set; }
         [DataMember, Required(AllowEmptyStrings = false, ErrorMessage = "Must have valid rating id")]
         public int RatingId { get; set; }
+        [DataMember, Required(AllowEmptyStrings = false, ErrorMessage = "Must have valid link key")]
+        public string LinkKey { get; set; } 
+        public LinkRating ToLinkRating(string User)
+        {
+            return new LinkRating { LinkKey = LinkKey, RatingId = RatingId, User = User };
+        }
+    }
+    public class LinkRating : PostLinkRating
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }        
         [DataMember()]
         public virtual RatingOption Rating { get; set; }
-        [DataMember, Required(AllowEmptyStrings = false, ErrorMessage = "Must have valid link key")]
-        public string LinkKey { get; set; }
         [DataMember, Required(AllowEmptyStrings = false, ErrorMessage = "Must have valid user id")]
         public string User { get; set; }
         [JsonIgnore]
