@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace linkRatinglives_api.Controllers
@@ -49,12 +50,12 @@ namespace linkRatinglives_api.Controllers
 
         // POST: LinkRating/
         [HttpPost]
-        //[Authorize]
-        public ActionResult Post([FromBody] LinkRating linkRating)
+        [Authorize]
+        public ActionResult Post([FromBody] PostLinkRating linkRating)
         {
             try
             {
-                repository.Insert(linkRating);
+                repository.Insert(linkRating.ToLinkRating(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value));
                 repository.Save();
                 return Ok();
             }
