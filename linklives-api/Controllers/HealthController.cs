@@ -15,7 +15,8 @@ namespace linklives_api.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok("I am alive!");
+            var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName();
+            return Ok($"{assemblyName.Name} version {assemblyName.Version} is alive!");
         }
     }
 }
