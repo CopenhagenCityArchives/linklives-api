@@ -61,7 +61,7 @@ namespace linkRatinglives_api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return StatusCode(500,e.Message);
             }
         }
         // DELETE: LinkRating/5

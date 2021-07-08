@@ -84,7 +84,7 @@ namespace linklives_api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return StatusCode(500, e.Message);
             }
         }
 
@@ -101,7 +101,7 @@ namespace linklives_api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                return StatusCode(500, e.Message);
             }
         }
         // DELETE: LifeCourse/5
