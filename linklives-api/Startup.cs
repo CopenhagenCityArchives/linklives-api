@@ -87,8 +87,8 @@ namespace linklives_api
             #endregion
 
             services.AddDbContext<LinklivesContext>(options =>
-           options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
-            var settings = new ConnectionSettings(new Uri(Configuration["ElasticSearch:URL"]))
+           options.UseMySQL(Configuration["LinkLives-DB-conn"]));
+            var settings = new ConnectionSettings(new Uri(Configuration["ElasticSearch-URL"]))
                 .RequestTimeout(TimeSpan.FromMinutes(2))
                 .DisableDirectStreaming();
             services.AddSingleton<ElasticClient>(new ElasticClient(settings));
