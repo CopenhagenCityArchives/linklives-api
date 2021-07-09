@@ -31,9 +31,13 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "environmentVariables": {
+        "LinkLives-DB-conn": "server=linklives-data.cf2nstf005qs.eu-west-1.rds.amazonaws.com;uid=admin;pwd=%(!5DGFn9sdfLkFg;database=linklives_data",
+        "ElasticSearch-URL": "https://data-dev.link-lives.dk"
+      },
       "publishAllPorts": true,
-      "useSSL": false,
-      "httpPort": 5000
+      "httpPort": 5000,
+      "useSSL": false
     }
   }
 }
