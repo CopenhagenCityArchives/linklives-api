@@ -32,7 +32,7 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "LinkLives-DB-conn": "server=linklives-data.cf2nstf005qs.eu-west-1.rds.amazonaws.com;***REMOVED***;pwd=%(!5DGFn9sdfLkFg;database=***REMOVED***",
+        "LinkLives-DB-conn": "server=***REMOVED***;***REMOVED***;pwd=***REMOVED***;database=***REMOVED***",
         "ElasticSearch-URL": "https://data-dev.link-lives.dk"
       },
       "publishAllPorts": true,
