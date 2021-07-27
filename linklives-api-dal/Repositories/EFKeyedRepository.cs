@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public abstract class EFKeyedRepository<T> where T : KeyedItem
+    public abstract class EFKeyedRepository<T> : DBRepository<T>  where T : KeyedItem
     {
-        protected readonly LinklivesContext context;
-
-        protected EFKeyedRepository(LinklivesContext context)
+        protected EFKeyedRepository(LinklivesContext context) : base(context)
         {
-            this.context = context;
         }
+
         public void Delete(string key)
         {
             var entity = context.Set<T>().Find(key);
@@ -25,17 +23,6 @@ namespace linklives_api_dal.Repositories
         {
             return context.Set<T>().IncludeAll().SingleOrDefault(x => x.Key == key);
         }
-
-        public IEnumerable<T> GetAll()
-        {
-            return context.Set<T>();
-        }
-
-        public void Insert(T entity)
-        {
-            context.Set<T>().Add(entity);
-        }
-
         public void Insert(IEnumerable<T> entitties)
         {
             var newEntryKeys = entitties.Select(x => x.Key).Distinct().ToArray();
@@ -44,9 +31,6 @@ namespace linklives_api_dal.Repositories
 
             context.Set<T>().AddRange(newEntities);
         }
-        public void Save()
-        {
-            context.SaveChanges();
-        }
+
     }
 }
