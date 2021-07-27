@@ -9,6 +9,7 @@ namespace linklives_api_dal.Repositories
 {
     public interface ILinkRepository
     {
+        int Count();
         IEnumerable<Link> GetAll();
         Link GetByKey(string linkKey);
         void Insert(Link link);

@@ -9,6 +9,7 @@ namespace linklives_api_dal.Repositories
 {
     public interface ILifeCourseRepository
     {
+        int Count();
         IEnumerable<LifeCourse> GetAll();
         LifeCourse GetByKey(string lifeCourseKey);
         IEnumerable<LifeCourse> GetByUserRatings(string userId);
