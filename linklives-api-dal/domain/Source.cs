@@ -14,7 +14,7 @@ namespace linklives_api_dal.domain
         [JsonProperty(PropertyName = "source_id")]
         public int Source_id { get; set; }
         [JsonProperty(PropertyName = "year")]
-        public int Year { get; set; }
+        public string Year { get; set; }
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
         [JsonProperty(PropertyName = "description")]
