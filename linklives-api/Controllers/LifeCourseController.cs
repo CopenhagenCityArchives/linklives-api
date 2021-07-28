@@ -42,8 +42,8 @@ namespace linklives_api.Controllers
                     foreach (var link in result.Links)
                     {
                         link.GetPersonAppearances(pa_repo);
-                        link.Pa_1.Source = sources.SingleOrDefault(X => X.Source_id == link.Pa_1.Source_id);
-                        link.Pa_2.Source = sources.SingleOrDefault(X => X.Source_id == link.Pa_2.Source_id);
+                        link.Pa_1.Source = sources.SingleOrDefault(X => X.Source_id.ToString() == link.Pa_1.Source_id);
+                        link.Pa_2.Source = sources.SingleOrDefault(X => X.Source_id.ToString() == link.Pa_2.Source_id);
                     }
 
 

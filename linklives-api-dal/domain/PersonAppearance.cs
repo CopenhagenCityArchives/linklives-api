@@ -19,7 +19,7 @@ namespace linklives_api_dal.domain
         [JsonProperty(PropertyName = "sourceplace_display")]
         public string Sourceplace_display { get; set; }
         [JsonProperty(PropertyName = "source_id")]
-        public int Source_id { get; set; }
+        public string Source_id { get; set; }
         public Source Source { get; set; }
     }
     public class PAIndex
