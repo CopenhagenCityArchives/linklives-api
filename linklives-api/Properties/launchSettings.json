@@ -14,6 +14,8 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
+        "LinkLives-DB-conn": "server=linklives-data-test-2.cf2nstf005qs.eu-west-1.rds.amazonaws.com;uid=admin;pwd=rt[7c-{QN47jaZ!d?;database=linklives_data",
+        "ElasticSearch-URL": "https://data-dev.link-lives.dk",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
