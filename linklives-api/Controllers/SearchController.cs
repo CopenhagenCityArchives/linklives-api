@@ -22,7 +22,6 @@ namespace linklives_api.Controllers
             this.client = client;
         }
         [HttpPost("{indexes}")]
-        [ProducesResponseType(typeof(StringResponse), 200)]
         public IActionResult Get(string indexes, [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] string query = null)
         {
             //If no query was supplied in the request we will assume they just want to get all documents in the specified index
