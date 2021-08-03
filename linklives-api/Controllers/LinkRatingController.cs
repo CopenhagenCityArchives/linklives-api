@@ -16,10 +16,12 @@ namespace linkRatinglives_api.Controllers
     public class LinkRatingController : ControllerBase
     {
         private readonly ILinkRatingRepository repository;
+        private readonly IRatingOptionRepository ratingOptionRepository;
 
-        public LinkRatingController(ILinkRatingRepository repository)
+        public LinkRatingController(ILinkRatingRepository repository, IRatingOptionRepository ratingOptionRepository)
         {
             this.repository = repository;
+            this.ratingOptionRepository = ratingOptionRepository;
         }
 
         // GET: LinkRating/5
@@ -40,7 +42,20 @@ namespace linkRatinglives_api.Controllers
         [ProducesResponseType(404)]
         public ActionResult GetByLinkKey(string key)
         {
-            var result = repository.GetbyLinkKey(key);
+            var result = repository.GetbyLinkKey(key);            
+            if (result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
+        [HttpGet("~/Link/{key}/Ratings/stats")]
+        [ProducesResponseType(typeof(List<LinkRatingStats>), 200)]
+        [ProducesResponseType(404)]
+        public ActionResult GetLinkRatingStats(string key)
+        {
+            var ratings = repository.GetbyLinkKey(key);
+            var result = CalculateHeadingStats(ratings);
             if (result != null)
             {
                 return Ok(result);
@@ -72,6 +87,18 @@ namespace linkRatinglives_api.Controllers
             repository.Delete(id);
             repository.Save();
             return Ok();
+        }
+
+        private LinkRatingStats CalculateHeadingStats(List<LinkRating> linkRatings)
+        {
+            var headings = ratingOptionRepository.GetAll().Select(ro => ro.Heading).Distinct();
+            var headingstats = new LinkRatingStats();
+            headingstats.TotalRatings = linkRatings.Count();
+            foreach (var heading in headings)
+            {
+                headingstats.HeadingRatings.Add(heading, linkRatings.Count(lr => lr.Rating.Heading == heading));
+            }
+            return headingstats;
         }
     }
 }
