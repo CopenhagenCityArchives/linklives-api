@@ -87,7 +87,10 @@ namespace linklives_api
             #endregion
 
             services.AddDbContext<LinklivesContext>(options =>
-           options.UseMySQL(Configuration["LinkLives-DB-conn"]));
+            {
+                options.UseMySQL(Configuration["LinkLives-DB-conn"]);
+                options.EnableSensitiveDataLogging();
+                });
             var settings = new ConnectionSettings(new Uri(Configuration["ElasticSearch-URL"]))
                 .RequestTimeout(TimeSpan.FromMinutes(2))
                 .DisableDirectStreaming();

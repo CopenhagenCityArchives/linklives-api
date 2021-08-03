@@ -22,7 +22,7 @@ namespace linklives_api.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(PersonAppearance),200)]
         [ProducesResponseType(404)]
         public ActionResult Get(string id)
         {
