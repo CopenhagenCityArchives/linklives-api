@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace linklives_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class StatsController : ControllerBase
     {
