@@ -25,16 +25,7 @@ namespace linklives_api_dal.domain
         public string Method_description { get; set; }
         public string LifeCourseKey { get; set; }
         public virtual IEnumerable<LinkRating> Ratings { get; set; }
-        [NotMapped]
-        public PersonAppearance Pa_1 { get; set; }
-        [NotMapped]
-        public PersonAppearance Pa_2 { get; set; }
         [JsonIgnore]
         public virtual LifeCourse LifeCourse { get; set; }
-        public void GetPersonAppearances(IPersonAppearanceRepository repo)
-        {
-            Pa_1 = repo.GetById($"{Source_id1}-{Pa_id1}");
-            Pa_2 = repo.GetById($"{Source_id2}-{Pa_id2}");
-        }
     }
 }
