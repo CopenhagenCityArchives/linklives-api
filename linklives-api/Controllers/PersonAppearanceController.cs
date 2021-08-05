@@ -22,11 +22,11 @@ namespace linklives_api.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(PersonAppearance),200)]
+        [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public ActionResult Get(string id)
         {
-            var result = repository.GetById(id);
+            var result = repository.GetRawJsonById(id);
             if (result != null)
             {
                 return Ok(result);
