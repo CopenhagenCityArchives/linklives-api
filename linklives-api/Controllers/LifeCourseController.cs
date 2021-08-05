@@ -37,12 +37,8 @@ namespace linklives_api.Controllers
             {
                 try
                 {                    
-                    //Fetch person apperances and add them to the lifecourse
-                    result.PersonAppearances = pa_repo.GetByIds(result.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList());
-                    //Fetch a cache of all our sources
                     var sources = source_repo.GetAll();
-                    //Add sources to our person apperances
-                    result.PersonAppearances.ForEach(pa => pa.Source = sources.Single(s => s.Source_id.ToString() == pa.Source_id));
+                    AddPersonApperances(result, sources);
                 }
                 catch (Exception)
                 {
@@ -64,6 +60,20 @@ namespace linklives_api.Controllers
             var result = repository.GetByUserRatings(userId);
             if (result != null)
             {
+                try
+                {
+                    //Fetch a cache of all our sources
+                    var sources = source_repo.GetAll();
+                    foreach (var lc in result)
+                    {
+                        AddPersonApperances(lc, sources);
+                    }
+                }
+                catch (Exception)
+                {
+                    //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
+                    return StatusCode(206, result);
+                }
                 return Ok(result);
             }
             return NotFound();
@@ -110,6 +120,13 @@ namespace linklives_api.Controllers
             repository.Delete(key);
             repository.Save();
             return Ok();
+        }
+        private void AddPersonApperances(LifeCourse lifecourse, List<Source> sources)
+        {
+            //Fetch person apperances and add them to the lifecourse
+            lifecourse.PersonAppearances = pa_repo.GetByIds(lifecourse.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList());
+            //Add sources to our person apperances
+            lifecourse.PersonAppearances.ForEach(pa => pa.Source = sources.Single(s => s.Source_id.ToString() == pa.Source_id));
         }
     }
 }
