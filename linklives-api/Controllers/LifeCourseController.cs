@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace linklives_api.Controllers
@@ -58,11 +59,13 @@ namespace linklives_api.Controllers
             }
             return NotFound();
         }
-        [HttpGet("~/user/lifecourses/{userId}")]
+        [HttpGet("~/user/ratings/lifecourses")]
         [ProducesResponseType(typeof(LifeCourse), 200)]
         [ProducesResponseType(404)]
-        public ActionResult GetByUserid(string userId)
+        [Authorize]
+        public ActionResult GetByUserid()
         {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var result = repository.GetByUserRatings(userId);
             if (result != null)
             {
