@@ -1,4 +1,5 @@
-﻿using linklives_api_dal.domain;
+﻿using Elasticsearch.Net;
+using linklives_api_dal.domain;
 using Nest;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,35 @@ namespace linklives_api_dal.Repositories
                             .Field(f => f.Person_appearance.Id)
                             .Terms(Id))))));
             return searchResponse.Documents.SingleOrDefault().Person_appearance;
+        }
+        public string GetRawJsonById(string Id)
+        {
+            var query = @"
+            {
+                ""from"": 0,
+                ""size"": 100,
+                ""query"": {
+                            ""bool"": {
+                                ""must"": [
+                                    {
+                                    ""nested"": {
+                                        ""path"": ""person_appearance"",
+                                    ""query"": {
+                                            ""term"": {
+                                                ""person_appearance.id"": {
+                                                    ""value"": """ + Id + @"""
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                        ]
+                    }
+                }
+            }";
+            var searchResponse = client.LowLevel.Search<StringResponse>("pas", query);
+
+            return searchResponse.Body;
         }
     }
 }
