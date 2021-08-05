@@ -22,14 +22,15 @@ namespace linklives_api.Controllers
             this.client = client;
         }
         [HttpPost("{indexes}")]
-        public IActionResult Get(string indexes, [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] string query = null)
+        public IActionResult Get(string indexes, [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] JsonElement query)
         {
+            var stringquery = query.ToString();
             //If no query was supplied in the request we will assume they just want to get all documents in the specified index
-            if (string.IsNullOrEmpty(query))
+            if (string.IsNullOrEmpty(stringquery))
             {
-                query = @"{ ""query"": { ""match_all"": { } } }";
+                stringquery = @"{ ""query"": { ""match_all"": { } } }";
             }
-            var searchResponse = client.LowLevel.Search<StringResponse>(indexes, query);
+            var searchResponse = client.LowLevel.Search<StringResponse>(indexes, stringquery);
 
             return StatusCode(searchResponse.HttpStatusCode.HasValue ? searchResponse.HttpStatusCode.Value : 0, searchResponse.Body);
         }
