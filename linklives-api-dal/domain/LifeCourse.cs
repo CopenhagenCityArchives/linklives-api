@@ -10,5 +10,6 @@ namespace linklives_api_dal.domain
     {
         public int Life_course_id { get; set; }
         public virtual ICollection<Link> Links { get; set; }
+        public List<PersonAppearance> PersonAppearances {get; set;}
     }
 }

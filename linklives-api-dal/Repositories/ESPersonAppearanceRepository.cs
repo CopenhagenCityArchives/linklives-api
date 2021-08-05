@@ -34,6 +34,23 @@ namespace linklives_api_dal.Repositories
                             .Terms(Id))))));
             return searchResponse.Documents.SingleOrDefault().Person_appearance;
         }
+
+        public List<PersonAppearance> GetByIds(List<string> Ids)
+        {
+            var searchResponse = client.Search<PAIndex>(s => s
+            .Index("pas")
+            .From(0)
+            .Size(100)
+            .Query(q => q
+                    .Nested(n => n
+                    .Path("person_appearance")
+                    .Query(nq => nq
+                        .Terms(t => t
+                            .Field(f => f.Person_appearance.Id)
+                            .Terms(Ids))))));
+            return searchResponse.Documents.Select(x => x.Person_appearance).ToList();
+        }
+
         public string GetRawJsonById(string Id)
         {
             var query = @"

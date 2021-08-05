@@ -36,18 +36,13 @@ namespace linklives_api.Controllers
             if (result != null)
             {
                 try
-                {
+                {                    
+                    //Fetch person apperances and add them to the lifecourse
+                    result.PersonAppearances = pa_repo.GetByIds(result.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList());
                     //Fetch a cache of all our sources
                     var sources = source_repo.GetAll();
-                    //Go fetch Person Appearance data
-                    foreach (var link in result.Links)
-                    {
-                        link.GetPersonAppearances(pa_repo);
-                        link.Pa_1.Source = sources.SingleOrDefault(X => X.Source_id.ToString() == link.Pa_1.Source_id);
-                        link.Pa_2.Source = sources.SingleOrDefault(X => X.Source_id.ToString() == link.Pa_2.Source_id);
-                    }
-
-
+                    //Add sources to our person apperances
+                    result.PersonAppearances.ForEach(pa => pa.Source = sources.Single(s => s.Source_id.ToString() == pa.Source_id));
                 }
                 catch (Exception)
                 {

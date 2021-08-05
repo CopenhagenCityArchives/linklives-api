@@ -31,17 +31,7 @@ namespace linklives_api.Controllers
             var result = repository.GetByKey(key);
             if (result != null)
             {
-                //Go fetch person appearance data
-                try
-                {
-                    result.GetPersonAppearances(pa_repo);
-                }
-                catch (Exception)
-                {
-                    //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
-                    return StatusCode(206, result);
-                }
-                
+                //Go fetch person appearance data                             
                 return Ok(result);
             }
             return NotFound();
