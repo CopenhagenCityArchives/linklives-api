@@ -102,8 +102,10 @@ namespace linklives_api.Controllers
         public ActionResult BulkInsert([FromBody]IEnumerable<LifeCourse> lifeCourses)
         {
             try
-            {
-                repository.Insert(lifeCourses);
+            {               
+                repository.Insert(lifeCourses
+                    .GroupBy(lc => lc.Key)
+                    .Select(g => g.First())); //Filter out duplicate keys before inserting
                 repository.Save();
                 return Ok();
             }
