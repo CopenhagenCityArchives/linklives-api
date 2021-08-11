@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace linklives_api.Controllers
@@ -35,18 +36,9 @@ namespace linklives_api.Controllers
             if (result != null)
             {
                 try
-                {
-                    //Fetch a cache of all our sources
+                {                    
                     var sources = source_repo.GetAll();
-                    //Go fetch Person Appearance data
-                    foreach (var link in result.Links)
-                    {
-                        link.GetPersonAppearances(pa_repo);
-                        link.Pa_1.Source = sources.SingleOrDefault(X => X.Source_id == link.Pa_1.Source_id);
-                        link.Pa_2.Source = sources.SingleOrDefault(X => X.Source_id == link.Pa_2.Source_id);
-                    }
-
-
+                    AddPersonApperances(result, sources);
                 }
                 catch (Exception)
                 {
@@ -58,14 +50,30 @@ namespace linklives_api.Controllers
             }
             return NotFound();
         }
-        [HttpGet("~/user/lifecourses/{userId}")]
+        [HttpGet("~/user/ratings/lifecourses")]
         [ProducesResponseType(typeof(LifeCourse), 200)]
         [ProducesResponseType(404)]
-        public ActionResult GetByUserid(string userId)
+        [Authorize]
+        public ActionResult GetByUserid()
         {
+            var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var result = repository.GetByUserRatings(userId);
             if (result != null)
             {
+                try
+                {
+                    //Fetch a cache of all our sources
+                    var sources = source_repo.GetAll();
+                    foreach (var lc in result)
+                    {
+                        AddPersonApperances(lc, sources);
+                    }
+                }
+                catch (Exception)
+                {
+                    //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
+                    return StatusCode(206, result);
+                }
                 return Ok(result);
             }
             return NotFound();
@@ -94,8 +102,10 @@ namespace linklives_api.Controllers
         public ActionResult BulkInsert([FromBody]IEnumerable<LifeCourse> lifeCourses)
         {
             try
-            {
-                repository.Insert(lifeCourses);
+            {               
+                repository.Insert(lifeCourses
+                    .GroupBy(lc => lc.Key)
+                    .Select(g => g.First())); //Filter out duplicate keys before inserting
                 repository.Save();
                 return Ok();
             }
@@ -112,6 +122,13 @@ namespace linklives_api.Controllers
             repository.Delete(key);
             repository.Save();
             return Ok();
+        }
+        private void AddPersonApperances(LifeCourse lifecourse, List<Source> sources)
+        {
+            //Fetch person apperances and add them to the lifecourse
+            lifecourse.PersonAppearances = pa_repo.GetByIds(lifecourse.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList());
+            //Add sources to our person apperances
+            lifecourse.PersonAppearances.ForEach(pa => pa.Source = sources.Single(s => s.Source_id.ToString() == pa.Source_id));
         }
     }
 }

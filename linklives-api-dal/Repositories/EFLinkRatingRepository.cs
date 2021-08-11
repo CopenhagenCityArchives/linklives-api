@@ -8,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public class EFLinkRatingRepository : ILinkRatingRepository
+    public class EFLinkRatingRepository : DBRepository<LinkRating>, ILinkRatingRepository
     {
-        private readonly LinklivesContext context;
 
-        public EFLinkRatingRepository(LinklivesContext context)
+        public EFLinkRatingRepository(LinklivesContext context) : base(context)
         {
-            this.context = context;
         }
         public List<LinkRating> GetbyLinkKey(string linkKey)
         {
@@ -30,23 +28,9 @@ namespace linklives_api_dal.Repositories
             return context.LinkRatings.IncludeAll().SingleOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<LinkRating> GetAll()
-        {
-            return context.LinkRatings;
-        }
-
-        public void Insert(LinkRating entity)
-        {
-            context.LinkRatings.Add(entity);
-        }
-
         public void Insert(IEnumerable<LinkRating> entitties)
         {
             context.LinkRatings.AddRange(entitties);
-        }
-        public void Save()
-        {
-            context.SaveChanges();
         }
     }
 }

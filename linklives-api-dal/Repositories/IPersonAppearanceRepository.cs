@@ -10,5 +10,7 @@ namespace linklives_api_dal.Repositories
     public interface IPersonAppearanceRepository
     {
         PersonAppearance GetById(string Id);
+        List<PersonAppearance> GetByIds(List<string> Ids);
+        string GetRawJsonById(string Id);
     }
 }

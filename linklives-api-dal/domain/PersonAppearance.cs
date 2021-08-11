@@ -18,8 +18,10 @@ namespace linklives_api_dal.domain
         public string Occupation_display { get; set; }
         [JsonProperty(PropertyName = "sourceplace_display")]
         public string Sourceplace_display { get; set; }
+        [JsonProperty(PropertyName = "event_type")]
+        public string Event_type { get; set; }
         [JsonProperty(PropertyName = "source_id")]
-        public int Source_id { get; set; }
+        public string Source_id { get; set; }
         public Source Source { get; set; }
     }
     public class PAIndex

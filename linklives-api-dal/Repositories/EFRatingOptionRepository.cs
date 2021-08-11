@@ -7,18 +7,11 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public class EFRatingOptionRepository : IRatingOptionRepository
+    public class EFRatingOptionRepository : DBRepository<RatingOption>, IRatingOptionRepository
     {
-        private readonly LinklivesContext context;
 
-        public EFRatingOptionRepository(LinklivesContext context)
+        public EFRatingOptionRepository(LinklivesContext context) : base(context)
         {
-            this.context = context;
-        }
-
-        public IEnumerable<RatingOption> GetAll()
-        {
-            return context.RatingOptions;
         }
 
         public RatingOption GetById(int id)

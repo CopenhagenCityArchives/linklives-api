@@ -1,4 +1,5 @@
-﻿using linklives_api_dal.Repositories;
+﻿using linklives_api_dal.domain;
+using linklives_api_dal.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,6 +21,7 @@ namespace linklives_api.Controllers
         }
 
         [HttpPost("~/sources")]
+        [ProducesResponseType(typeof(List<Source>),200)]
         public IActionResult GetAll()
         {
             return Ok(repository.GetAll());
