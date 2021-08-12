@@ -21,6 +21,7 @@ namespace linklives_api_dal.Repositories
         public List<Source> GetAll()
         {
             var searchResponse = client.Search<SourceIndex>(s => s
+            .Size(1000)
             .Index("sources")
             .Query(q => q.MatchAll()));
             return searchResponse.Documents.Select(x => x.Source).ToList();

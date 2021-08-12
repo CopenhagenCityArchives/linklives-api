@@ -28,7 +28,7 @@ namespace linklives_api.Controllers
             //If no query was supplied in the request we will assume they just want to get all documents in the specified index
             if (string.IsNullOrEmpty(stringquery))
             {
-                stringquery = @"{ ""query"": { ""match_all"": { } } }";
+                stringquery = @"{""size"" : 1000, ""query"": { ""match_all"": { } } }";
             }
             var searchResponse = client.LowLevel.Search<StringResponse>(indexes, stringquery);
 
