@@ -21,7 +21,7 @@ namespace linklives_api_dal.domain
         [JsonProperty(PropertyName = "event_type")]
         public string Event_type { get; set; }
         [JsonProperty(PropertyName = "source_id")]
-        public string Source_id { get; set; }
+        public int Source_id { get; set; }
         public Source Source { get; set; }
     }
     public class PAIndex

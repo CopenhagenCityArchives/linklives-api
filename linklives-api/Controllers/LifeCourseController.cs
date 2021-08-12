@@ -40,7 +40,7 @@ namespace linklives_api.Controllers
                     var sources = source_repo.GetAll();
                     AddPersonApperances(result, sources);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
                     return StatusCode(206, result);
@@ -128,7 +128,7 @@ namespace linklives_api.Controllers
             //Fetch person apperances and add them to the lifecourse
             lifecourse.PersonAppearances = pa_repo.GetByIds(lifecourse.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList());
             //Add sources to our person apperances
-            lifecourse.PersonAppearances.ForEach(pa => pa.Source = sources.Single(s => s.Source_id.ToString() == pa.Source_id));
+            lifecourse.PersonAppearances.ForEach(pa => pa.Source = sources.Single(s => s.Source_id == pa.Source_id));
         }
     }
 }
