@@ -1,6 +1,8 @@
 ﻿using Elasticsearch.Net;
 using linklives_api_dal.domain;
 using Nest;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,32 +55,13 @@ namespace linklives_api_dal.Repositories
 
         public string GetRawJsonById(string Id)
         {
-            var query = @"
-            {
-                ""from"": 0,
-                ""size"": 100,
-                ""query"": {
-                            ""bool"": {
-                                ""must"": [
-                                    {
-                                    ""nested"": {
-                                        ""path"": ""person_appearance"",
-                                    ""query"": {
-                                            ""term"": {
-                                                ""person_appearance.id"": {
-                                                    ""value"": """ + Id + @"""
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                        ]
-                    }
-                }
-            }";
-            var searchResponse = client.LowLevel.Search<StringResponse>("pas", query);
+            var PasSearchResponse = client.LowLevel.Get<StringResponse>("pas", Id);
+            var pas = (JObject)JObject.Parse(PasSearchResponse.Body)["_source"]["person_appearance"];
 
-            return searchResponse.Body;
+            var SourceSearchResponse = client.LowLevel.Get<StringResponse>("sources", (string)pas["source_id"]);
+            pas.Add("source", JObject.Parse(SourceSearchResponse.Body)["_source"]["source"]);
+
+            return pas.ToString(Formatting.None);
         }
     }
 }
