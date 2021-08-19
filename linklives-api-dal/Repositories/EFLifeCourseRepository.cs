@@ -1,4 +1,5 @@
 ﻿using linklives_api_dal.domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace linklives_api_dal.Repositories
 
         public IEnumerable<LifeCourse> GetByUserRatings(string userId)
         {
-            return context.LinkRatings.Where(lr => lr.User == userId).Select(lr => lr.Link.LifeCourse).Distinct();
+            var lifecourseskeys = context.LinkRatings.Where(lr => lr.User == userId).Include(x => x.Link.LifeCourse).Select(lr => lr.Link.LifeCourse.Key).Distinct().ToList();
+            return this.GetByKeys(lifecourseskeys);
         }
     }
 }

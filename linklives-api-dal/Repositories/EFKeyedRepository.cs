@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public abstract class EFKeyedRepository<T> : DBRepository<T>  where T : KeyedItem
+    public abstract class EFKeyedRepository<T> : DBRepository<T> where T : KeyedItem
     {
         protected EFKeyedRepository(LinklivesContext context) : base(context)
         {
@@ -22,6 +22,10 @@ namespace linklives_api_dal.Repositories
         public T GetByKey(string key)
         {
             return context.Set<T>().IncludeAll().SingleOrDefault(x => x.Key == key);
+        }
+        public IEnumerable<T> GetByKeys(IList<string> keys)
+        {
+            return context.Set<T>().IncludeAll().Where(x => keys.Contains(x.Key));
         }
         public void Insert(IEnumerable<T> entitties)
         {

@@ -37,8 +37,7 @@ namespace linklives_api.Controllers
             {
                 try
                 {                    
-                    var sources = source_repo.GetAll();
-                    AddPersonApperances(result, sources);
+                    AddPersonApperances(result);
                 }
                 catch (Exception e)
                 {
@@ -62,11 +61,9 @@ namespace linklives_api.Controllers
             {
                 try
                 {
-                    //Fetch a cache of all our sources
-                    var sources = source_repo.GetAll();
                     foreach (var lc in result)
                     {
-                        AddPersonApperances(lc, sources);
+                        AddPersonApperances(lc);
                     }
                 }
                 catch (Exception)
@@ -123,12 +120,10 @@ namespace linklives_api.Controllers
             repository.Save();
             return Ok();
         }
-        private void AddPersonApperances(LifeCourse lifecourse, List<Source> sources)
+        private void AddPersonApperances(LifeCourse lifecourse)
         {
             //Fetch person apperances and add them to the lifecourse
             lifecourse.PersonAppearances = pa_repo.GetByIds(lifecourse.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList());
-            //Add sources to our person apperances
-            lifecourse.PersonAppearances.ForEach(pa => pa.Source = sources.Single(s => s.Source_id == pa.Source_id));
         }
     }
 }

@@ -12,6 +12,7 @@ namespace linklives_api_dal.Repositories
         int Count();
         IEnumerable<LifeCourse> GetAll();
         LifeCourse GetByKey(string lifeCourseKey);
+        IEnumerable<LifeCourse> GetByKeys(IList<string> lifecourseskeys);
         IEnumerable<LifeCourse> GetByUserRatings(string userId);
         void Insert(LifeCourse lifeCourse);
         void Insert(IEnumerable<LifeCourse> lifeCourses);

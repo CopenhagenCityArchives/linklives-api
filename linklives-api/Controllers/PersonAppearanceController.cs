@@ -1,6 +1,7 @@
 ﻿using linklives_api_dal.domain;
 using linklives_api_dal.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace linklives_api.Controllers
         [ProducesResponseType(404)]
         public ActionResult Get(string id)
         {
-            var result = repository.GetRawJsonById(id);
+            var result = repository.GetById(id).ToString(Formatting.None);
             if (result != null)
             {
                 return Ok(result);

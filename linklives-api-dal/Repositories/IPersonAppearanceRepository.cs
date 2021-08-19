@@ -1,4 +1,5 @@
 ﻿using linklives_api_dal.domain;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,7 @@ namespace linklives_api_dal.Repositories
 {
     public interface IPersonAppearanceRepository
     {
-        PersonAppearance GetById(string Id);
-        List<PersonAppearance> GetByIds(List<string> Ids);
-        string GetRawJsonById(string Id);
+        JObject GetById(string Id);
+        List<dynamic> GetByIds(List<string> Ids);
     }
 }
