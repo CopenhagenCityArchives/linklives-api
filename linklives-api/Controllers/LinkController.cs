@@ -61,7 +61,7 @@ namespace linklives_api.Controllers
         {
             try
             {
-                repository.Insert(links
+                repository.Upsert(links
                     .GroupBy(l => l.Key)
                     .Select(g => g.First())); //Filter out duplicate keys before inserting
                 repository.Save();

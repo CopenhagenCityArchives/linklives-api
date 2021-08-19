@@ -35,6 +35,10 @@ namespace linklives_api_dal.Repositories
 
             context.Set<T>().AddRange(newEntities);
         }
+        public void Upsert(IEnumerable<T> entitties)
+        {
+            context.Set<T>().BulkMerge(entitties);
+        }
 
     }
 }

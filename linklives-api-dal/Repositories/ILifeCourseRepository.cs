@@ -16,6 +16,7 @@ namespace linklives_api_dal.Repositories
         IEnumerable<LifeCourse> GetByUserRatings(string userId);
         void Insert(LifeCourse lifeCourse);
         void Insert(IEnumerable<LifeCourse> lifeCourses);
+        void Upsert(IEnumerable<LifeCourse> entitties);
         void Delete(string lifeCourseKey);
         void Save();
     }

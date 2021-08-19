@@ -14,6 +14,7 @@ namespace linklives_api_dal.Repositories
         Link GetByKey(string linkKey);
         void Insert(Link link);
         void Insert(IEnumerable<Link> links);
+        void Upsert(IEnumerable<Link> entitties);
         void Delete(string linkKey);
         void Save();
     }
