@@ -1,14 +1,8 @@
 ﻿using Elasticsearch.Net;
-using linklives_api_dal.domain;
 using Nest;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 
 namespace linklives_api_dal.Repositories

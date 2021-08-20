@@ -1,10 +1,5 @@
-﻿using linklives_api_dal.domain;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
