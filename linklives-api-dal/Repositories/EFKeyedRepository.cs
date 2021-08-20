@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace linklives_api_dal.Repositories
 {
-    public abstract class EFKeyedRepository<T> : DBRepository<T>  where T : KeyedItem
+    public abstract class EFKeyedRepository<T> : DBRepository<T> where T : KeyedItem
     {
         protected EFKeyedRepository(LinklivesContext context) : base(context)
         {
@@ -23,6 +21,10 @@ namespace linklives_api_dal.Repositories
         {
             return context.Set<T>().IncludeAll().SingleOrDefault(x => x.Key == key);
         }
+        public IEnumerable<T> GetByKeys(IList<string> keys)
+        {
+            return context.Set<T>().IncludeAll().Where(x => keys.Contains(x.Key));
+        }
         public void Insert(IEnumerable<T> entitties)
         {
             var newEntryKeys = entitties.Select(x => x.Key).Distinct().ToArray();
@@ -30,6 +32,10 @@ namespace linklives_api_dal.Repositories
             var newEntities = entitties.Where(x => !keysExiststingInDb.Contains(x.Key));
 
             context.Set<T>().AddRange(newEntities);
+        }
+        public void Upsert(IEnumerable<T> entitties)
+        {
+            context.Set<T>().BulkMerge(entitties);
         }
 
     }

@@ -1,13 +1,11 @@
 ﻿using linklives_api_dal.domain;
 using linklives_api_dal.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace linklives_api.Controllers
 {
@@ -37,10 +35,9 @@ namespace linklives_api.Controllers
             {
                 try
                 {                    
-                    var sources = source_repo.GetAll();
-                    AddPersonApperances(result, sources);
+                    AddPersonApperances(result);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
                     return StatusCode(206, result);
@@ -62,11 +59,9 @@ namespace linklives_api.Controllers
             {
                 try
                 {
-                    //Fetch a cache of all our sources
-                    var sources = source_repo.GetAll();
                     foreach (var lc in result)
                     {
-                        AddPersonApperances(lc, sources);
+                        AddPersonApperances(lc);
                     }
                 }
                 catch (Exception)
@@ -103,7 +98,7 @@ namespace linklives_api.Controllers
         {
             try
             {               
-                repository.Insert(lifeCourses
+                repository.Upsert(lifeCourses
                     .GroupBy(lc => lc.Key)
                     .Select(g => g.First())); //Filter out duplicate keys before inserting
                 repository.Save();
@@ -123,12 +118,10 @@ namespace linklives_api.Controllers
             repository.Save();
             return Ok();
         }
-        private void AddPersonApperances(LifeCourse lifecourse, List<Source> sources)
+        private void AddPersonApperances(LifeCourse lifecourse)
         {
             //Fetch person apperances and add them to the lifecourse
             lifecourse.PersonAppearances = pa_repo.GetByIds(lifecourse.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList());
-            //Add sources to our person apperances
-            lifecourse.PersonAppearances.ForEach(pa => pa.Source = sources.Single(s => s.Source_id.ToString() == pa.Source_id));
         }
     }
 }

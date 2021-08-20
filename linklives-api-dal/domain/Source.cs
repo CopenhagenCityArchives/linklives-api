@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace linklives_api_dal.domain
 {
@@ -14,7 +9,7 @@ namespace linklives_api_dal.domain
         [JsonProperty(PropertyName = "source_id")]
         public int Source_id { get; set; }
         [JsonProperty(PropertyName = "year")]
-        public int Year { get; set; }
+        public int? Year { get; set; }
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
         [JsonProperty(PropertyName = "description")]

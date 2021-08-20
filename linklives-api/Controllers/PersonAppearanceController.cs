@@ -1,10 +1,6 @@
-﻿using linklives_api_dal.domain;
-using linklives_api_dal.Repositories;
+﻿using linklives_api_dal.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,7 +22,7 @@ namespace linklives_api.Controllers
         [ProducesResponseType(404)]
         public ActionResult Get(string id)
         {
-            var result = repository.GetRawJsonById(id);
+            var result = repository.GetById(id).ToString(Formatting.None);
             if (result != null)
             {
                 return Ok(result);

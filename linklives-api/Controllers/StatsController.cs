@@ -1,12 +1,7 @@
 ﻿using linklives_api_dal.domain;
 using linklives_api_dal.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nest;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace linklives_api.Controllers
 {
@@ -33,7 +28,7 @@ namespace linklives_api.Controllers
         {
             var result = new Stats
             {
-                EsPersonAppearanceCount = _esClient.Count<PersonAppearance>(x => x.Index("pas")).Count,
+                EsPersonAppearanceCount = _esClient.Count<dynamic>(x => x.Index("pas")).Count,
                 EsLifecourseCount = _esClient.Count<LifeCourse>(x => x.Index("lifecourses")).Count,
                 EsLinkCount = _esClient.Count<Link>(x => x.Index("links")).Count,
                 EsSourceCount = _esClient.Count<Source>(x => x.Index("sources")).Count,

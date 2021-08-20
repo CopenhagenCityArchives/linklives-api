@@ -1,12 +1,10 @@
 ﻿using linklives_api_dal.domain;
 using linklives_api_dal.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace linklives_api.Controllers
 {
@@ -61,7 +59,7 @@ namespace linklives_api.Controllers
         {
             try
             {
-                repository.Insert(links
+                repository.Upsert(links
                     .GroupBy(l => l.Key)
                     .Select(g => g.First())); //Filter out duplicate keys before inserting
                 repository.Save();

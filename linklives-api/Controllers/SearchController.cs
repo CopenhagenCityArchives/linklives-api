@@ -1,13 +1,8 @@
 ﻿using Elasticsearch.Net;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Nest;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace linklives_api.Controllers
 {
@@ -28,7 +23,7 @@ namespace linklives_api.Controllers
             //If no query was supplied in the request we will assume they just want to get all documents in the specified index
             if (string.IsNullOrEmpty(stringquery))
             {
-                stringquery = @"{ ""query"": { ""match_all"": { } } }";
+                stringquery = @"{""size"" : 100, ""query"": { ""match_all"": { } } }";
             }
             var searchResponse = client.LowLevel.Search<StringResponse>(indexes, stringquery);
 
