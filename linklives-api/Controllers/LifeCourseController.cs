@@ -121,7 +121,7 @@ namespace linklives_api.Controllers
         private void AddPersonApperances(LifeCourse lifecourse)
         {
             //Fetch person apperances and add them to the lifecourse
-            lifecourse.PersonAppearances = pa_repo.GetByIds(lifecourse.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList());
+            lifecourse.PersonAppearances = pa_repo.GetByIds(lifecourse.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList()).ToList(); ;
         }
     }
 }

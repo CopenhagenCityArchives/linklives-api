@@ -10,29 +10,29 @@ namespace linklives_api_dal.Repositories
     public class ESPersonAppearanceRepository : IPersonAppearanceRepository
     {
         private readonly ElasticClient client;
+        private readonly ISourceRepository sourceRepository;
 
-        public ESPersonAppearanceRepository(ElasticClient client)
+        public ESPersonAppearanceRepository(ElasticClient client, ISourceRepository sourceRepository)
         {
             this.client = client;
+            this.sourceRepository = sourceRepository;
         }
 
-        public JObject GetById(string Id)
+        public dynamic GetById(string id)
         {
-            var PasSearchResponse = client.LowLevel.Get<StringResponse>("pas", Id);
-            var pas = (JObject)JObject.Parse(PasSearchResponse.Body)["_source"]["person_appearance"];
-
-            var SourceSearchResponse = client.LowLevel.Get<StringResponse>("sources", (string)pas["source_id"]);
-            pas.Add("source", JObject.Parse(SourceSearchResponse.Body)["_source"]["source"]);
+            var searchResponse = client.Get<dynamic>(id, g => g.Index("pas"));
+            dynamic pas = searchResponse.Source["person_appearance"];
+            pas.Add("source", sourceRepository.GetById((int)pas["source_id"]));
 
             return pas;
         }
 
-        public List<dynamic> GetByIds(List<string> Ids)
+        public IEnumerable<dynamic> GetByIds(List<string> Ids)
         {
             var pasSearchResponse = client.Search<dynamic>(s => s
             .Index("pas")
             .From(0)
-            .Size(100)
+            .Size(1000)
             .Query(q => q
                     .Nested(n => n
                     .Path("person_appearance")
@@ -41,21 +41,11 @@ namespace linklives_api_dal.Repositories
                             .Field("person_appearance.id")
                             .Terms(Ids))))));
             var pass = pasSearchResponse.Documents.Select(x => x["person_appearance"]).ToList();
-            var sourceids = pass.Select(p => (int)p["source_id"]);
-            var sourceSearchResponse = client.Search<dynamic>(s => s
-            .Index("sources")
-            .From(0)
-            .Size(100)
-            .Query(q => q
-                    .Nested(n => n
-                    .Path("source")
-                    .Query(nq => nq
-                        .Terms(t => t
-                            .Field("source.source_id")
-                            .Terms(sourceids))))));
+            var sourceids = pass.Select(p => (int)p["source_id"]).ToList();
+            var sources = sourceRepository.GetByIds(sourceids);
             foreach (var pas in pass)
             {
-                pas.Add("source", sourceSearchResponse.Documents.Single(s => (int)s["source"]["source_id"] == (int)pas["source_id"])["source"]);
+                pas.Add("source", sources.Single(s => (int)s["source_id"] == (int)pas["source_id"]));
             }
             return pass;
         }

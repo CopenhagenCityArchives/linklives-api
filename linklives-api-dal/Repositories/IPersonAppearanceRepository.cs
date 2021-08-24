@@ -5,7 +5,7 @@ namespace linklives_api_dal.Repositories
 {
     public interface IPersonAppearanceRepository
     {
-        JObject GetById(string Id);
-        List<dynamic> GetByIds(List<string> Ids);
+        dynamic GetById(string Id);
+        IEnumerable<dynamic> GetByIds(List<string> Ids);
     }
 }
