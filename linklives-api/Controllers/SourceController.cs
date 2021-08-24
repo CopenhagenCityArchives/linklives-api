@@ -16,11 +16,17 @@ namespace linklives_api.Controllers
             this.repository = repository;
         }
 
-        [HttpPost("~/sources")]
+        [HttpGet("~/sources")]
         [ProducesResponseType(typeof(List<dynamic>),200)]
         public IActionResult GetAll()
         {
             return Ok(repository.GetAll());
+        }
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(List<dynamic>), 200)]
+        public IActionResult Get(int id)
+        {
+            return Ok(repository.GetById(id));
         }
     }
 }
