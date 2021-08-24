@@ -31,7 +31,7 @@ namespace linklives_api.Controllers
                 EsPersonAppearanceCount = _esClient.Count<dynamic>(x => x.Index("pas")).Count,
                 EsLifecourseCount = _esClient.Count<LifeCourse>(x => x.Index("lifecourses")).Count,
                 EsLinkCount = _esClient.Count<Link>(x => x.Index("links")).Count,
-                EsSourceCount = _esClient.Count<Source>(x => x.Index("sources")).Count,
+                EsSourceCount = _esClient.Count<dynamic>(x => x.Index("sources")).Count,
                 DbLifecourseCount = _lifeCourseRepository.Count(),
                 DbLinkCount = _linkRepository.Count(),
                 DbLinkRatingCount = _linkRatingRepository.Count()

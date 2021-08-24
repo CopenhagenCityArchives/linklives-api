@@ -14,13 +14,13 @@ namespace linklives_api_dal.Repositories
             this.client = client;
         }
 
-        public List<Source> GetAll()
+        public List<dynamic> GetAll()
         {
-            var searchResponse = client.Search<SourceIndex>(s => s
+            var searchResponse = client.Search<dynamic>(s => s
             .Size(1000)
             .Index("sources")
             .Query(q => q.MatchAll()));
-            return searchResponse.Documents.Select(x => x.Source).ToList();
+            return searchResponse.Documents.Select(x => x["source"]).ToList();
         }
     }
 }

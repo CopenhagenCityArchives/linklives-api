@@ -17,7 +17,7 @@ namespace linklives_api.Controllers
         }
 
         [HttpPost("~/sources")]
-        [ProducesResponseType(typeof(List<Source>),200)]
+        [ProducesResponseType(typeof(List<dynamic>),200)]
         public IActionResult GetAll()
         {
             return Ok(repository.GetAll());
