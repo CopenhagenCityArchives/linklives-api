@@ -1,5 +1,6 @@
-﻿using linklives_api_dal.domain;
-using linklives_api_dal.Repositories;
+﻿
+using Linklives.DAL;
+using Linklives.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;

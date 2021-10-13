@@ -11,9 +11,9 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using linklives_api_dal;
-using linklives_api_dal.Repositories;
+using Linklives.DAL;
 using Nest;
+using Linklives.Domain;
 
 namespace linklives_api
 {

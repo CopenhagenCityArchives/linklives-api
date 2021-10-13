@@ -1,5 +1,5 @@
-﻿using linklives_api_dal.domain;
-using linklives_api_dal.Repositories;
+﻿using Linklives.Domain;
+using Linklives.DAL;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
