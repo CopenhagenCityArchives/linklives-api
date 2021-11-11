@@ -34,8 +34,8 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "LinkLives-DB-conn": "server=***REMOVED***;***REMOVED***;pwd=***REMOVED***;database=***REMOVED***",
-        "ElasticSearch-URL": "https://data-dev.link-lives.dk"
+        "LinkLives-DB-conn": "server=127.0.0.1;uid=root;pwd=123456;database=***REMOVED***",
+        "ElasticSearch-URL": "http://127.0.0.1"
       },
       "publishAllPorts": true,
       "httpPort": 5000,
