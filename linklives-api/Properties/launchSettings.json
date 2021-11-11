@@ -12,10 +12,10 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "lifecourse/5-1010580_4-1000000_0",
       "environmentVariables": {
-        "LinkLives-DB-conn": "server=***REMOVED***;***REMOVED***;pwd=***REMOVED***;database=***REMOVED***",
-        "ElasticSearch-URL": "https://data-dev.link-lives.dk",
+        "LinkLives-DB-conn": "server=127.0.0.1;uid=root;pwd=123456;database=***REMOVED***",
+        "ElasticSearch-URL": "http://127.0.0.1:9200",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
