@@ -14,7 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "lifecourse/5-1010580_4-1000000_0",
       "environmentVariables": {
-        "LinkLives-DB-conn": "server=127.0.0.1;uid=root;pwd=123456;database=***REMOVED***",
+        "LinkLives-DB-conn": "server=127.0.0.1;uid=root;pwd=123456;database=linklives_data",
         "ElasticSearch-URL": "http://127.0.0.1:9200",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -34,7 +34,7 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
-        "LinkLives-DB-conn": "server=127.0.0.1;uid=root;pwd=123456;database=***REMOVED***",
+        "LinkLives-DB-conn": "server=127.0.0.1;uid=root;pwd=123456;database=linklives_data",
         "ElasticSearch-URL": "http://127.0.0.1"
       },
       "publishAllPorts": true,
