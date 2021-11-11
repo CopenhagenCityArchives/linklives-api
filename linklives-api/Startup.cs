@@ -14,6 +14,8 @@ using System.Security.Claims;
 using Linklives.DAL;
 using Nest;
 using Linklives.Domain;
+using Newtonsoft.Json;
+using System.Buffers;
 
 namespace linklives_api
 {
@@ -80,7 +82,10 @@ namespace linklives_api
 
             services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
             #endregion
-
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddDbContext<LinklivesContext>(options =>
             {
                 options.UseMySQL(Configuration["LinkLives-DB-conn"]);
