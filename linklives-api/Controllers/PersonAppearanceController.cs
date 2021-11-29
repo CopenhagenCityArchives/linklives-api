@@ -11,20 +11,28 @@ namespace linklives_api.Controllers
     public class PersonAppearanceController : ControllerBase
     {
         private readonly IPersonAppearanceRepository repository;
+        private readonly ITranscribedPARepository transcribedPARepository;
 
-        public PersonAppearanceController(IPersonAppearanceRepository repository)
+        public PersonAppearanceController(IPersonAppearanceRepository repository, ITranscribedPARepository transcribedPARepository)
         {
             this.repository = repository;
+            this.transcribedPARepository = transcribedPARepository;
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(200)]
+        [ProducesResponseType(206)]
         [ProducesResponseType(404)]
         public ActionResult Get(string id)
         {
             var result = repository.GetById(id);
             if (result != null)
             {
+                var transcribed = transcribedPARepository.GetById(id);
+
+                if(transcribed == null) { return StatusCode(206, result); }
+
+                result.Transcribed = transcribed;
                 return Ok(result);
             }
             return NotFound();
