@@ -28,11 +28,6 @@ namespace linklives_api.Controllers
             var result = repository.GetById(id);
             if (result != null)
             {
-                var transcribed = transcribedPARepository.GetById(id);
-
-                if(transcribed == null) { return StatusCode(206, result); }
-
-                result.Transcribed = transcribed;
                 return Ok(result);
             }
             return NotFound();
