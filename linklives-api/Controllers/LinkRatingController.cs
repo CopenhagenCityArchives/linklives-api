@@ -71,6 +71,14 @@ namespace linkRatinglives_api.Controllers
             try
             {
                 var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+                var ratings = repository.GetbyLinkKey(linkRatingData.LinkKey);
+                var alreadyRated = ratings.Any((rating) => rating.User == userId);
+
+                if(alreadyRated) {
+                    return Forbid();
+                }
+
                 var linkRating = linkRatingData.ToLinkRating(userId);
                 repository.Insert(linkRating);
                 repository.Save();
