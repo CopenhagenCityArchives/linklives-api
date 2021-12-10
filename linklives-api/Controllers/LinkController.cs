@@ -30,7 +30,7 @@ namespace linklives_api.Controllers
             var result = repository.GetByKey(key);
             if (result != null)
             {
-                //Go fetch person appearance data                             
+                //Go fetch person appearance data
                 return Ok(result);
             }
             return NotFound();

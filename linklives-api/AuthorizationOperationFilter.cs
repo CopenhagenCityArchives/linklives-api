@@ -32,7 +32,7 @@ namespace linklives_api
                         Reference = new OpenApiReference
                         {
                             Type = ReferenceType.SecurityScheme,
-                            // Definition name. 
+                            // Definition name.
                             // Should exactly match the one given in the service configuration
                             Id = "Bearer"
                         }

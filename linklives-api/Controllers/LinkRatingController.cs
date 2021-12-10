@@ -41,13 +41,14 @@ namespace linkRatinglives_api.Controllers
         [ProducesResponseType(404)]
         public ActionResult GetByLinkKey(string key)
         {
-            var result = repository.GetbyLinkKey(key);            
+            var result = repository.GetbyLinkKey(key);
             if (result != null)
             {
                 return Ok(result);
             }
             return NotFound();
         }
+
         [HttpGet("~/Link/{key}/Ratings/stats")]
         [ProducesResponseType(typeof(List<LinkRatingStats>), 200)]
         [ProducesResponseType(404)]
