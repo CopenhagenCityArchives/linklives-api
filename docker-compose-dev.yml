@@ -7,7 +7,7 @@ services:
       dockerfile: ./linklives-api/Dockerfile
     container_name: linklives-api-webserver
     ports: 
-      - "80:80"
+      - "5923:80"
     depends_on:
       - linklives-db
     environment:
