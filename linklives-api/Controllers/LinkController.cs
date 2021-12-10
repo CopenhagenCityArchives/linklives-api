@@ -19,6 +19,7 @@ namespace linklives_api.Controllers
             this.repository = repository;
             this.pa_repo = pa_repo;
         }
+
         // GET: Link/5
         [HttpGet("{key}")]
         [ProducesResponseType(typeof(Link), 200)]
@@ -29,7 +30,7 @@ namespace linklives_api.Controllers
             var result = repository.GetByKey(key);
             if (result != null)
             {
-                //Go fetch person appearance data                             
+                //Go fetch person appearance data
                 return Ok(result);
             }
             return NotFound();
@@ -70,6 +71,7 @@ namespace linklives_api.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
         // DELETE: Link/5
         [HttpDelete("{key}")]
         [Authorize]

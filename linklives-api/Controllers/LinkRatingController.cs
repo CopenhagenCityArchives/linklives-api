@@ -35,18 +35,20 @@ namespace linkRatinglives_api.Controllers
             }
             return NotFound();
         }
+
         [HttpGet("~/Link/{key}/Ratings")]
         [ProducesResponseType(typeof(List<LinkRating>), 200)]
         [ProducesResponseType(404)]
         public ActionResult GetByLinkKey(string key)
         {
-            var result = repository.GetbyLinkKey(key);            
+            var result = repository.GetbyLinkKey(key);
             if (result != null)
             {
                 return Ok(result);
             }
             return NotFound();
         }
+
         [HttpGet("~/Link/{key}/Ratings/stats")]
         [ProducesResponseType(typeof(List<LinkRatingStats>), 200)]
         [ProducesResponseType(404)]
@@ -64,11 +66,21 @@ namespace linkRatinglives_api.Controllers
         // POST: LinkRating/
         [HttpPost]
         [Authorize]
-        public ActionResult Post([FromBody] PostLinkRating linkRating)
+        public ActionResult Post([FromBody] PostLinkRating linkRatingData)
         {
             try
             {
-                repository.Insert(linkRating.ToLinkRating(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value));
+                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+
+                var ratings = repository.GetbyLinkKey(linkRatingData.LinkKey);
+                var alreadyRated = ratings.Any((rating) => rating.User == userId);
+
+                if(alreadyRated) {
+                    return Forbid();
+                }
+
+                var linkRating = linkRatingData.ToLinkRating(userId);
+                repository.Insert(linkRating);
                 repository.Save();
                 return Ok();
             }
@@ -77,6 +89,7 @@ namespace linkRatinglives_api.Controllers
                 return StatusCode(500,e.Message);
             }
         }
+
         // DELETE: LinkRating/5
         [HttpDelete("{id}")]
         [Authorize]

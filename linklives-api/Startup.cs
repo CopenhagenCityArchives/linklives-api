@@ -62,7 +62,7 @@ namespace linklives_api
                     }
                 });
                 c.OperationFilter<AuthorizationOperationFilter>();
-            });            
+            });
 
             #region auth0
             string domain = $"https://{Configuration["Auth0:Domain"]}/";
@@ -103,12 +103,11 @@ namespace linklives_api
             services.AddScoped<ITranscribedPARepository, ESTranscribedPaRepository>();
             services.AddScoped<IRatingOptionRepository, EFRatingOptionRepository>();
             services.AddScoped<ISourceRepository, ESSourceRepository>();
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {            
+        {
             #region Swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -124,7 +123,7 @@ namespace linklives_api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-            }          
+            }
 
             //app.UseHttpsRedirection();
 

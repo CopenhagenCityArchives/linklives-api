@@ -35,7 +35,7 @@ namespace linklives_api.Controllers
             if (result != null)
             {
                 try
-                {                    
+                {
                     AddPersonApperances(result);
                 }
                 catch (Exception e)
@@ -43,7 +43,7 @@ namespace linklives_api.Controllers
                     //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
                     return StatusCode(206, result);
                 }
-               
+
                 return Ok(result);
             }
             return NotFound();
@@ -98,7 +98,7 @@ namespace linklives_api.Controllers
         public ActionResult BulkInsert([FromBody]IEnumerable<LifeCourse> lifeCourses)
         {
             try
-            {               
+            {
                 repository.Upsert(lifeCourses
                     .GroupBy(lc => lc.Key)
                     .Select(g => g.First())); //Filter out duplicate keys before inserting
