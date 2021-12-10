@@ -35,6 +35,7 @@ namespace linkRatinglives_api.Controllers
             }
             return NotFound();
         }
+
         [HttpGet("~/Link/{key}/Ratings")]
         [ProducesResponseType(typeof(List<LinkRating>), 200)]
         [ProducesResponseType(404)]
@@ -77,6 +78,7 @@ namespace linkRatinglives_api.Controllers
                 return StatusCode(500,e.Message);
             }
         }
+
         // DELETE: LinkRating/5
         [HttpDelete("{id}")]
         [Authorize]
