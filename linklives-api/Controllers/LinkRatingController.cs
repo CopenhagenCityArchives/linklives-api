@@ -65,11 +65,13 @@ namespace linkRatinglives_api.Controllers
         // POST: LinkRating/
         [HttpPost]
         [Authorize]
-        public ActionResult Post([FromBody] PostLinkRating linkRating)
+        public ActionResult Post([FromBody] PostLinkRating linkRatingData)
         {
             try
             {
-                repository.Insert(linkRating.ToLinkRating(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value));
+                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                var linkRating = linkRatingData.ToLinkRating(userId);
+                repository.Insert(linkRating);
                 repository.Save();
                 return Ok();
             }
