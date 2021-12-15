@@ -20,7 +20,7 @@ before_install:
   - sudo service mysql stop
   # Print Docker version for debugging purposes
   - docker --version
-     
+
 # Setup containers, run tests, clean up, install production dependencies and push Docker image
 script:
   # Prepare for deployment of Docker image
