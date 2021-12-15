@@ -36,12 +36,12 @@ namespace linkRatinglives_api.Controllers
             return NotFound();
         }
 
-        [HttpGet("~/Link/{key}/Ratings")]
+        [HttpGet("~/Link/{id}/Ratings")]
         [ProducesResponseType(typeof(List<LinkRating>), 200)]
         [ProducesResponseType(404)]
-        public ActionResult GetByLinkKey(string key)
+        public ActionResult GetByLinkId(int id)
         {
-            var result = repository.GetbyLinkKey(key);
+            var result = repository.GetbyLinkId(id);
             if (result != null)
             {
                 return Ok(result);
@@ -49,12 +49,12 @@ namespace linkRatinglives_api.Controllers
             return NotFound();
         }
 
-        [HttpGet("~/Link/{key}/Ratings/stats")]
+        [HttpGet("~/Link/{id}/Ratings/stats")]
         [ProducesResponseType(typeof(List<LinkRatingStats>), 200)]
         [ProducesResponseType(404)]
-        public ActionResult GetLinkRatingStats(string key)
+        public ActionResult GetLinkRatingStats(int id)
         {
-            var ratings = repository.GetbyLinkKey(key);
+            var ratings = repository.GetbyLinkId(id);
             var result = CalculateHeadingStats(ratings);
             if (result != null)
             {
@@ -72,7 +72,7 @@ namespace linkRatinglives_api.Controllers
             {
                 var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-                var ratings = repository.GetbyLinkKey(linkRatingData.LinkKey);
+                var ratings = repository.GetbyLinkId(linkRatingData.LinkId);
                 var alreadyRated = ratings.Any((rating) => rating.User == userId);
 
                 if(alreadyRated) {
