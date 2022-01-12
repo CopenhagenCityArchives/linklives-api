@@ -14,13 +14,15 @@ namespace linklives_api.Controllers
     [Route("[controller]")]
     public class LifeCourseController : ControllerBase
     {
-        private readonly ILifeCourseRepository repository;
+        private readonly IEFLifeCourseRepository repository;
+        private readonly IKeyedRepository<LifeCourse> esRepository;
         private readonly IPersonAppearanceRepository pa_repo;
         private readonly ISourceRepository source_repo;
 
-        public LifeCourseController(ILifeCourseRepository repository, IPersonAppearanceRepository pa_repo, ISourceRepository source_repo)
+        public LifeCourseController(IEFLifeCourseRepository repository, IKeyedRepository<LifeCourse> esRepository, IPersonAppearanceRepository pa_repo, ISourceRepository source_repo)
         {
             this.repository = repository;
+            this.esRepository = esRepository;
             this.pa_repo = pa_repo;
             this.source_repo = source_repo;
         }
@@ -36,7 +38,7 @@ namespace linklives_api.Controllers
             {
                 try
                 {
-                    AddPersonApperances(result);
+                    GetPAsLinksAndLinkRatings(result);
                 }
                 catch (Exception e)
                 {
@@ -55,17 +57,18 @@ namespace linklives_api.Controllers
         public ActionResult GetByUserid()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var result = repository.GetByUserRatings(userId);
+            var keys = repository.GetKeysByUserId(userId).ToList();
+            var result = esRepository.GetByKeys(keys);
             if (result != null)
             {
                 try
                 {
                     foreach (var lc in result)
                     {
-                        AddPersonApperances(lc);
+                        GetPAsLinksAndLinkRatings(lc);
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
                     return StatusCode(206, result);
@@ -119,7 +122,7 @@ namespace linklives_api.Controllers
             repository.Save();
             return Ok();
         }
-        private void AddPersonApperances(LifeCourse lifecourse)
+        private void GetPAsLinksAndLinkRatings(LifeCourse lifecourse)
         {
             //Fetch person apperances and add them to the lifecourse
             repository.GetLinks(lifecourse);

@@ -96,7 +96,8 @@ namespace linklives_api
                 .DisableDirectStreaming();
             services.AddSingleton<ElasticClient>(new ElasticClient(settings));
 
-            services.AddScoped<ILifeCourseRepository, EFLifeCourseRepository>();
+            services.AddScoped<IEFLifeCourseRepository, EFLifeCourseRepository>();
+            services.AddScoped<IKeyedRepository<LifeCourse>, ESLifeCourseRepository>();
             services.AddScoped<ILinkRepository, EFLinkRepository>();
             services.AddScoped<ILinkRatingRepository, EFLinkRatingRepository>();
             services.AddScoped<IPersonAppearanceRepository, ESPersonAppearanceRepository>();

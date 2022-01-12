@@ -10,11 +10,11 @@ namespace linklives_api.Controllers
     public class StatsController : ControllerBase
     {
         private readonly ElasticClient _esClient;
-        private readonly ILifeCourseRepository _lifeCourseRepository;
+        private readonly IEFLifeCourseRepository _lifeCourseRepository;
         private readonly ILinkRepository _linkRepository;
         private readonly ILinkRatingRepository _linkRatingRepository;
 
-        public StatsController(ElasticClient esClient, ILifeCourseRepository lifeCourseRepository, ILinkRepository linkRepository, ILinkRatingRepository linkRatingRepository)
+        public StatsController(ElasticClient esClient, IEFLifeCourseRepository lifeCourseRepository, ILinkRepository linkRepository, ILinkRatingRepository linkRatingRepository)
         {
             _esClient = esClient;
             _lifeCourseRepository = lifeCourseRepository;
