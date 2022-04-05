@@ -22,7 +22,7 @@ namespace linklives_api.Controllers
             _linkRatingRepository = linkRatingRepository;
         }
 
-        [HttpGet]
+        [HttpGet("~/counts")]
         [ProducesResponseType(typeof(Stats), 200)]
         public IActionResult Get()
         {
