@@ -15,6 +15,7 @@ namespace linkRatinglives_api.Controllers
     {
         private readonly ILinkRatingRepository repository;
         private readonly IRatingOptionRepository ratingOptionRepository;
+        private readonly IEFLifeCourseRepository lifeCourseRepository;
 
         public LinkRatingController(ILinkRatingRepository repository, IRatingOptionRepository ratingOptionRepository)
         {
@@ -75,9 +76,24 @@ namespace linkRatinglives_api.Controllers
                 var ratings = repository.GetbyLinkId(linkRatingData.LinkId);
                 var alreadyRated = ratings.Any((rating) => rating.User == userId);
 
-                if(alreadyRated) {
+                if (alreadyRated)
+                {
                     return Forbid();
                 }
+
+                try
+                {
+                    var lifecourse = lifeCourseRepository.GetByLinkId(linkRatingData.LinkId);
+
+                    if (lifecourse.Is_historic){
+                        return Forbid();
+                    }
+                }
+                catch (Exception e)
+                {
+                    return StatusCode(400, "Could not check if the links' lifecourse is historic: " + e.Message);
+                }
+
 
                 var linkRating = linkRatingData.ToLinkRating(userId);
                 repository.Insert(linkRating);
