@@ -17,10 +17,11 @@ namespace linkRatinglives_api.Controllers
         private readonly IRatingOptionRepository ratingOptionRepository;
         private readonly IEFLifeCourseRepository lifeCourseRepository;
 
-        public LinkRatingController(ILinkRatingRepository repository, IRatingOptionRepository ratingOptionRepository)
+        public LinkRatingController(ILinkRatingRepository repository, IRatingOptionRepository ratingOptionRepository, IEFLifeCourseRepository lifecourseRepository)
         {
             this.repository = repository;
             this.ratingOptionRepository = ratingOptionRepository;
+            this.lifeCourseRepository = lifecourseRepository;
         }
 
         // GET: LinkRating/5
