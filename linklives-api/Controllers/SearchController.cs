@@ -16,6 +16,7 @@ namespace linklives_api.Controllers
         {
             this.client = client;
         }
+        //TODO Delete. This endpoint is not longer in use
         [HttpPost("{indexes}")]
         public IActionResult Get(string indexes, [FromBody(EmptyBodyBehavior = EmptyBodyBehavior.Allow)] JsonElement query)
         {
