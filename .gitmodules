@@ -1,3 +1,4 @@
 [submodule "linklives-lib"]
 	path = linklives-lib
 	url = https://github.com/copenhagencityarchives/linklives-lib.git
+	branch = feature-memory-cache
