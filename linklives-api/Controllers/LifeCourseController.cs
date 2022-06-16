@@ -28,6 +28,7 @@ namespace linklives_api.Controllers
         }
         // GET: LifeCourse/5
         [HttpGet("{key}")]
+        [ResponseCache(CacheProfileName = "Default3600")]
         [ProducesResponseType(typeof(LifeCourse),200)]
         [ProducesResponseType(typeof(LifeCourse), 206)]
         [ProducesResponseType(404)]

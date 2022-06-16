@@ -126,6 +126,16 @@ namespace linklives_api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.Services.AddResponseCaching();
+            app.Services.AddControllers(options =>
+            {
+                options.CacheProfiles.Add("Default3600",
+                    new CacheProfile()
+                    {
+                        Duration = 3600
+                    });
+            });
+
             //app.UseHttpsRedirection();
 
             app.UseRouting();
@@ -133,6 +143,7 @@ namespace linklives_api
 
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseResponseCaching();
 
             app.UseEndpoints(endpoints =>
             {
