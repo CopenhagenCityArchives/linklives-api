@@ -16,6 +16,7 @@ using Nest;
 using Linklives.Domain;
 using Newtonsoft.Json;
 using System.Buffers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace linklives_api
 {
@@ -86,6 +87,23 @@ namespace linklives_api
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
+            services.AddResponseCaching();
+            services.AddControllers(options =>
+            {
+                options.CacheProfiles.Add("StaticLinkLivesData",
+                    new CacheProfile()
+                    {
+                        Duration = 36000
+                    });
+
+                options.CacheProfiles.Add("RatingOptions",
+                    new CacheProfile()
+                    {
+                        Duration = 3600
+                    });
+            });
+
             services.AddDbContext<LinklivesContext>(options =>
             {
                 options.UseMySQL(Configuration["LinkLives-DB-conn"]);
@@ -125,22 +143,6 @@ namespace linklives_api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.Services.AddResponseCaching();
-            app.Services.AddControllers(options =>
-            {
-                options.CacheProfiles.Add("StaticLinkLivesData",
-                    new CacheProfile()
-                    {
-                        Duration = 36000
-                    });
-
-                options.CacheProfiles.Add("RatingOptions",
-                    new CacheProfile()
-                    {
-                        Duration = 3600
-                    });
-            });
 
             //app.UseHttpsRedirection();
 
