@@ -129,7 +129,13 @@ namespace linklives_api
             app.Services.AddResponseCaching();
             app.Services.AddControllers(options =>
             {
-                options.CacheProfiles.Add("Default3600",
+                options.CacheProfiles.Add("StaticLinkLivesData",
+                    new CacheProfile()
+                    {
+                        Duration = 36000
+                    });
+
+                options.CacheProfiles.Add("RatingOptions",
                     new CacheProfile()
                     {
                         Duration = 3600

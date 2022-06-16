@@ -18,7 +18,7 @@ namespace linklives_api.Controllers
 
         [Route("~/[controller]s")]
         [HttpGet()]
-        [ResponseCache(CacheProfileName = "Default3600")]
+        [ResponseCache(CacheProfileName = "RatingOptions")]
         [ProducesResponseType(typeof(List<RatingOption>), 200)]
         public IActionResult Get()
         {

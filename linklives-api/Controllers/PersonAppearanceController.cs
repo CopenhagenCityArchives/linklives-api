@@ -20,7 +20,7 @@ namespace linklives_api.Controllers
         }
 
         [HttpGet("{id}")]
-        [ResponseCache(CacheProfileName = "Default3600")]
+        [ResponseCache(CacheProfileName = "StaticLinkLivesData")]
         [ProducesResponseType(200)]
         [ProducesResponseType(206)]
         [ProducesResponseType(404)]
