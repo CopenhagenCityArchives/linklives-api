@@ -17,7 +17,7 @@ namespace linklives_api.Controllers
         }
 
         //TODO: Is this endpoint used?
-        [HttpPost("~/sources")]
+        [HttpGet("~/sources")]
         [ResponseCache(CacheProfileName = "StaticLinkLivesData")]
         [ProducesResponseType(typeof(List<Source>),200)]
         public IActionResult GetAll()
