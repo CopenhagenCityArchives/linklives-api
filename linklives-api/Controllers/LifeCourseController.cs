@@ -58,8 +58,11 @@ namespace linklives_api.Controllers
         public ActionResult GetByUserid()
         {
             var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var keys = repository.GetKeysByUserId(userId).ToList();
-            var result = esRepository.GetByKeys(keys);
+            
+            var keys = repository.GetKeysByUserId(userId);
+
+            var result = esRepository.GetByKeys(keys.ToList());
+
             if (result != null)
             {
                 try
