@@ -102,6 +102,12 @@ namespace linklives_api
                     {
                         Duration = 3600
                     });
+
+                options.CacheProfiles.Add("UserRatings",
+                    new CacheProfile()
+                    {
+                        Duration = 60
+                    });
             });
 
             services.AddDbContext<LinklivesContext>(options =>

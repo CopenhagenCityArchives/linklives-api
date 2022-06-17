@@ -52,6 +52,7 @@ namespace linklives_api.Controllers
             return NotFound();
         }
         [HttpGet("~/user/ratings/lifecourses")]
+        [ResponseCache(CacheProfileName = "UserRatings")]
         [ProducesResponseType(typeof(LifeCourse), 200)]
         [ProducesResponseType(404)]
         [Authorize]
