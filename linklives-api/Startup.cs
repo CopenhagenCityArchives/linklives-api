@@ -85,8 +85,8 @@ namespace linklives_api
             #endregion
             services.AddControllersWithViews()
                 .AddNewtonsoftJson(options =>
-                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-            );
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+                );
 
             services.AddResponseCaching();
             services.AddControllers(options =>
@@ -114,7 +114,7 @@ namespace linklives_api
             {
                 options.UseMySQL(Configuration["LinkLives-DB-conn"]);
                 options.EnableSensitiveDataLogging();
-                });
+            });
             var settings = new ConnectionSettings(new Uri(Configuration["ElasticSearch-URL"]))
                 .RequestTimeout(TimeSpan.FromMinutes(2))
                 .DisableDirectStreaming();
