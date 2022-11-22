@@ -1,6 +1,6 @@
 ﻿using Linklives.DAL;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Linklives.Serialization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -32,6 +32,30 @@ namespace linklives_api.Controllers
                 return Ok(result);
             }
             return NotFound();
+        }
+
+        [HttpPost("{id}/download.{format}")]
+        [ResponseCache(CacheProfileName = "StaticLinkLivesData")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(206)]
+        [ProducesResponseType(404)]
+        public ActionResult Download(string id, string format)
+        {
+            var encoder = Encoder.ForFormat(format);
+            if (encoder == null) {
+                return NotFound("No formatter for that format exists.");
+            }
+
+            var personAppearance = repository.GetById(id);
+            if (personAppearance == null)
+            {
+                return NotFound("No person appearance with that ID exists.");
+            }
+
+            var rows = SpreadsheetSerializer.Serialize(personAppearance);
+            var result = encoder.Encode(rows);
+
+            return File(result, encoder.ContentType, $"personAppearance.{format}");
         }
     }
 }
