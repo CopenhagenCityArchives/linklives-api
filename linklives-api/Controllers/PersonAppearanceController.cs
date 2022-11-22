@@ -1,6 +1,6 @@
 ﻿using Linklives.DAL;
 using Microsoft.AspNetCore.Mvc;
-using Linklives.Domain;
+using Linklives.Serialization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,8 +52,7 @@ namespace linklives_api.Controllers
                 return NotFound("No person appearance with that ID exists.");
             }
 
-            var serializable = new RowSerializable[] { personAppearance };
-            var rows = SpreadsheetSerializer.Serialize(serializable);
+            var rows = SpreadsheetSerializer.Serialize(personAppearance);
             var result = encoder.Encode(rows);
 
             return File(result, encoder.ContentType, $"personAppearance.{format}");
