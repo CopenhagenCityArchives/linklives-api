@@ -1,6 +1,7 @@
 ﻿
 using Linklives.DAL;
 using Linklives.Domain;
+using Linklives.Serialization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -51,6 +52,33 @@ namespace linklives_api.Controllers
             }
             return NotFound();
         }
+
+        // GET: LifeCourse/5/download.xlsx
+        [HttpPost("{key}/download.{format}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(206)]
+        [ProducesResponseType(404)]
+        public ActionResult Download(string key, string format)
+        {
+            var encoder = Encoder.ForFormat(format);
+            if (encoder == null) {
+                return NotFound("No formatter for that format exists.");
+            }
+
+            var lifecourse = repository.GetByKey(key);
+            if (lifecourse == null)
+            {
+                return NotFound("No lifecourse with that key exists");
+            }
+
+            GetPAsLinksAndLinkRatings(lifecourse);
+
+            var rows = SpreadsheetSerializer.Serialize(lifecourse);
+            var result = encoder.Encode(rows);
+
+            return File(result, encoder.ContentType, $"lifecourse.{format}");
+        }
+
         [HttpGet("~/user/ratings/lifecourses")]
         [ResponseCache(CacheProfileName = "UserRatings")]
         [ProducesResponseType(typeof(LifeCourse), 200)]
