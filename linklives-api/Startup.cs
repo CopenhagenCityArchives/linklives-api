@@ -153,7 +153,7 @@ namespace linklives_api
             //app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseCors(builder => builder.WithExposedHeaders("Content-Disposition"));
+            app.UseCors();
 
             app.UseAuthentication();
             app.UseAuthorization();
