@@ -36,9 +36,11 @@ namespace linklives_api
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .WithExposedHeaders("Content-Disposition")
+                );
             });
             #endregion
             services.AddControllers();
