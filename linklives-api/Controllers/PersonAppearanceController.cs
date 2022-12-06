@@ -53,7 +53,7 @@ namespace linklives_api.Controllers
             }
 
             var rows = SpreadsheetSerializer.Serialize(personAppearance);
-            var result = encoder.Encode(rows);
+            var result = encoder.Encode("Person appearance", rows);
 
             return File(result, encoder.ContentType, $"personAppearance.{format}");
         }

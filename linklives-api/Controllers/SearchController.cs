@@ -111,7 +111,7 @@ namespace linklives_api.Controllers
                 });
 
             var rows = SpreadsheetSerializer.Serialize(orderedQualifiedResults);
-            var sheet = encoder.Encode(rows);
+            var sheet = encoder.Encode("Search result", rows);
 
             return File(sheet, encoder.ContentType, $"searchresult.{format}");
         }

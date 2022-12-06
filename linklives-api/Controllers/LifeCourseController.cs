@@ -73,8 +73,21 @@ namespace linklives_api.Controllers
 
             GetPAsLinksAndLinkRatings(lifecourse);
 
-            var rows = SpreadsheetSerializer.Serialize(lifecourse);
-            var result = encoder.Encode(rows);
+            var linksRows = lifecourse.Links.Select((link) => {
+                return new Dictionary<string, (string, Exportable)> {
+                    ["life_course_id"] = (lifecourse.Life_course_id.ToString(), new Exportable(FieldCategory.Identification)),
+                    ["link_id"] = (link.Link_id, new Exportable(FieldCategory.Identification)),
+                    ["pa_id1"] = (link.Pa_id1.ToString(), new Exportable(FieldCategory.Identification, extraWeight: 1)),
+                    ["pa_id2"] = (link.Pa_id2.ToString(), new Exportable(FieldCategory.Identification, extraWeight: 2)),
+                    ["method_id"] = (link.Method_id, new Exportable(extraWeight: 3)),
+                    ["score"] = (link.Score, new Exportable(extraWeight: 4)),
+                };
+            }).ToArray();
+
+            var result = encoder.Encode(new Dictionary<string, Dictionary<string, (string, Exportable)>[]>{
+                ["Lifecourse"] = SpreadsheetSerializer.Serialize(lifecourse),
+                ["Links"] = linksRows,
+            });
 
             return File(result, encoder.ContentType, $"lifecourse.{format}");
         }
