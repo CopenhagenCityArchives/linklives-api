@@ -86,7 +86,7 @@ namespace linklives_api.Controllers
 
             var result = encoder.Encode(new Dictionary<string, Dictionary<string, (string, Exportable)>[]>{
                 ["Lifecourse"] = SpreadsheetSerializer.Serialize(lifecourse),
-                ["Links"] = linksRows,
+                ["Links"] = SpreadsheetSerializer.Serialize(lifecourse.Links.ToArray()),
             });
 
             return File(result, encoder.ContentType, $"lifecourse.{format}");
