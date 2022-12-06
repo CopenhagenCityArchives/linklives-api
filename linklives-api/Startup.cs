@@ -123,6 +123,7 @@ namespace linklives_api
             services.AddSingleton<ElasticClient>(new ElasticClient(settings));
 
             services.AddScoped<IEFLifeCourseRepository, EFLifeCourseRepository>();
+            services.AddScoped<IEFDownloadHistoryRepository, EFDownloadHistoryRepository>();
             services.AddScoped<IKeyedRepository<LifeCourse>, ESLifeCourseRepository>();
             services.AddScoped<ILinkRepository, EFLinkRepository>();
             services.AddScoped<ILinkRatingRepository, EFLinkRatingRepository>();

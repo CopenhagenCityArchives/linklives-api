@@ -1,6 +1,7 @@
 ﻿using Elasticsearch.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 using Nest;
 using System.Text.Json;
 using Linklives.Serialization;
@@ -10,6 +11,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Linklives.DAL;
 using Linklives.Domain;
+using System.Security.Claims;
 
 namespace linklives_api.Controllers
 {
@@ -20,16 +22,19 @@ namespace linklives_api.Controllers
         private readonly ElasticClient client;
         private readonly IEFLifeCourseRepository lifecourseRepository;
         private readonly IPersonAppearanceRepository paRepository;
+        private readonly IEFDownloadHistoryRepository downloadHistoryRepository;
 
         public SearchController(
             ElasticClient client,
             IEFLifeCourseRepository lifecourseRepository,
-            IPersonAppearanceRepository paRepository
+            IPersonAppearanceRepository paRepository,
+            IEFDownloadHistoryRepository downloadHistoryRepository
         )
         {
             this.client = client;
             this.lifecourseRepository = lifecourseRepository;
             this.paRepository = paRepository;
+            this.downloadHistoryRepository = downloadHistoryRepository;
         }
 
         //TODO Delete. This endpoint is not longer in use
@@ -51,6 +56,7 @@ namespace linklives_api.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(206)]
         [ProducesResponseType(404)]
+        [Authorize]
         public ActionResult Download(string indexes, string format, [FromBody] Newtonsoft.Json.Linq.JObject data)
         {
             var encoder = Encoder.ForFormat(format);
@@ -127,6 +133,13 @@ namespace linklives_api.Controllers
                 ["Search result"] = SpreadsheetSerializer.Serialize(orderedQualifiedResults),
                 ["Links"] = SpreadsheetSerializer.Serialize(linksRows),
             });
+
+            downloadHistoryRepository.RegisterDownload(new DownloadHistoryEntry(
+                DownloadType.SearchResult,
+                $"indices={indexes};" + data.ToString(),
+                User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value
+            ));
+            downloadHistoryRepository.Save();
 
             return File(sheet, encoder.ContentType, $"searchresult.{format}");
         }
