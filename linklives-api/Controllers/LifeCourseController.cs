@@ -95,7 +95,7 @@ namespace linklives_api.Controllers
 
             var result = encoder.Encode(new Dictionary<string, Dictionary<string, (string, Exportable)>[]>{
                 ["Lifecourse"] = SpreadsheetSerializer.Serialize(lifecourse),
-                ["Links"] = SpreadsheetSerializer.Serialize(lifecourse.Links.ToArray()),
+                ["Links"] = linksRows,
             });
 
             downloadHistoryRepository.RegisterDownload(new DownloadHistoryEntry(

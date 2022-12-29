@@ -114,7 +114,7 @@ namespace linklives_api.Controllers
                         return (object)pas.First(pa => pa.Key == result.key);
                     }
                     return (object)lifecourses.First(lc => lc.Key == result.key);
-                });
+                }).ToArray();
 
             var linksRows = lifecourses.SelectMany((lifecourse) => {
                 return lifecourse.Links.Select((link) => {
@@ -130,8 +130,8 @@ namespace linklives_api.Controllers
             }).ToArray();
 
             var sheet = encoder.Encode(new Dictionary<string, Dictionary<string, (string, Exportable)>[]>{
-                ["Search result"] = SpreadsheetSerializer.Serialize(orderedQualifiedResults),
-                ["Links"] = SpreadsheetSerializer.Serialize(linksRows),
+                ["Search result"] = SpreadsheetSerializer.SerializeAll(orderedQualifiedResults),
+                ["Links"] = linksRows,
             });
 
             downloadHistoryRepository.RegisterDownload(new DownloadHistoryEntry(
