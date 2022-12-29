@@ -19,13 +19,21 @@ namespace linklives_api.Controllers
         private readonly IKeyedRepository<LifeCourse> esRepository;
         private readonly IPersonAppearanceRepository pa_repo;
         private readonly ISourceRepository source_repo;
+        private readonly IEFDownloadHistoryRepository downloadHistoryRepository;
 
-        public LifeCourseController(IEFLifeCourseRepository repository, IKeyedRepository<LifeCourse> esRepository, IPersonAppearanceRepository pa_repo, ISourceRepository source_repo)
+        public LifeCourseController(
+            IEFLifeCourseRepository repository,
+            IKeyedRepository<LifeCourse> esRepository,
+            IPersonAppearanceRepository pa_repo,
+            ISourceRepository source_repo,
+            IEFDownloadHistoryRepository downloadHistoryRepository
+        )
         {
             this.repository = repository;
             this.esRepository = esRepository;
             this.pa_repo = pa_repo;
             this.source_repo = source_repo;
+            this.downloadHistoryRepository = downloadHistoryRepository;
         }
         // GET: LifeCourse/5
         [HttpGet("{key}")]
@@ -58,6 +66,7 @@ namespace linklives_api.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(206)]
         [ProducesResponseType(404)]
+        [Authorize]
         public ActionResult Download(string key, string format)
         {
             var encoder = Encoder.ForFormat(format);
@@ -88,6 +97,13 @@ namespace linklives_api.Controllers
                 ["Lifecourse"] = SpreadsheetSerializer.Serialize(lifecourse),
                 ["Links"] = SpreadsheetSerializer.Serialize(lifecourse.Links.ToArray()),
             });
+
+            downloadHistoryRepository.RegisterDownload(new DownloadHistoryEntry(
+                DownloadType.Lifecourse,
+                key,
+                User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value
+            ));
+            downloadHistoryRepository.Save();
 
             return File(result, encoder.ContentType, $"lifecourse.{format}");
         }
