@@ -117,6 +117,7 @@ namespace linklives_api
                 options.UseMySQL(Configuration["LinkLives-DB-conn"]);
                 options.EnableSensitiveDataLogging();
             });
+
             var settings = new ConnectionSettings(new Uri(Configuration["ElasticSearch-URL"]))
                 .RequestTimeout(TimeSpan.FromMinutes(2))
                 .DisableDirectStreaming();
@@ -151,8 +152,6 @@ namespace linklives_api
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
             app.UseCors();
