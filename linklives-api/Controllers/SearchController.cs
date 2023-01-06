@@ -21,18 +21,21 @@ namespace linklives_api.Controllers
     {
         private readonly ElasticClient client;
         private readonly IEFLifeCourseRepository lifecourseRepository;
+        private readonly IKeyedRepository<LifeCourse> esLifecourseRepository;
         private readonly IPersonAppearanceRepository paRepository;
         private readonly IEFDownloadHistoryRepository downloadHistoryRepository;
 
         public SearchController(
             ElasticClient client,
             IEFLifeCourseRepository lifecourseRepository,
+            IKeyedRepository<LifeCourse> esLifecourseRepository,
             IPersonAppearanceRepository paRepository,
             IEFDownloadHistoryRepository downloadHistoryRepository
         )
         {
             this.client = client;
             this.lifecourseRepository = lifecourseRepository;
+            this.esLifecourseRepository = esLifecourseRepository;
             this.paRepository = paRepository;
             this.downloadHistoryRepository = downloadHistoryRepository;
         }
@@ -101,7 +104,7 @@ namespace linklives_api.Controllers
                 .ToList();
 
             var pas = paRepository.GetByIds(paKeys);
-            var lifecourses = lifecourseRepository.GetByKeys(lifecourseKeys);
+            var lifecourses = esLifecourseRepository.GetByKeys(lifecourseKeys);
 
             foreach(var lifecourse in lifecourses) {
                 GetPAsLinksAndLinkRatings(lifecourse);

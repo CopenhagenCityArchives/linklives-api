@@ -74,7 +74,7 @@ namespace linklives_api.Controllers
                 return NotFound("No formatter for that format exists.");
             }
 
-            var lifecourse = repository.GetByKey(key);
+            var lifecourse = esRepository.GetByKey(key);
             if (lifecourse == null)
             {
                 return NotFound("No lifecourse with that key exists");
