@@ -19,13 +19,21 @@ namespace linklives_api.Controllers
         private readonly IKeyedRepository<LifeCourse> esRepository;
         private readonly IPersonAppearanceRepository pa_repo;
         private readonly ISourceRepository source_repo;
+        private readonly IEFDownloadHistoryRepository downloadHistoryRepository;
 
-        public LifeCourseController(IEFLifeCourseRepository repository, IKeyedRepository<LifeCourse> esRepository, IPersonAppearanceRepository pa_repo, ISourceRepository source_repo)
+        public LifeCourseController(
+            IEFLifeCourseRepository repository,
+            IKeyedRepository<LifeCourse> esRepository,
+            IPersonAppearanceRepository pa_repo,
+            ISourceRepository source_repo,
+            IEFDownloadHistoryRepository downloadHistoryRepository
+        )
         {
             this.repository = repository;
             this.esRepository = esRepository;
             this.pa_repo = pa_repo;
             this.source_repo = source_repo;
+            this.downloadHistoryRepository = downloadHistoryRepository;
         }
         // GET: LifeCourse/5
         [HttpGet("{key}")]
@@ -58,6 +66,7 @@ namespace linklives_api.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(206)]
         [ProducesResponseType(404)]
+        [Authorize]
         public ActionResult Download(string key, string format)
         {
             var encoder = Encoder.ForFormat(format);
@@ -73,8 +82,28 @@ namespace linklives_api.Controllers
 
             GetPAsLinksAndLinkRatings(lifecourse);
 
-            var rows = SpreadsheetSerializer.Serialize(lifecourse);
-            var result = encoder.Encode(rows);
+            var linksRows = lifecourse.Links.Select((link) => {
+                return new Dictionary<string, (string, Exportable)> {
+                    ["life_course_id"] = (lifecourse.Life_course_id.ToString(), new Exportable(FieldCategory.Identification)),
+                    ["link_id"] = (link.Link_id, new Exportable(FieldCategory.Identification)),
+                    ["pa_id1"] = (link.Pa_id1.ToString(), new Exportable(FieldCategory.Identification, extraWeight: 1)),
+                    ["pa_id2"] = (link.Pa_id2.ToString(), new Exportable(FieldCategory.Identification, extraWeight: 2)),
+                    ["method_id"] = (link.Method_id, new Exportable(extraWeight: 3)),
+                    ["score"] = (link.Score, new Exportable(extraWeight: 4)),
+                };
+            }).ToArray();
+
+            var result = encoder.Encode(new Dictionary<string, Dictionary<string, (string, Exportable)>[]>{
+                ["Lifecourse"] = SpreadsheetSerializer.Serialize(lifecourse),
+                ["Links"] = linksRows,
+            });
+
+            downloadHistoryRepository.RegisterDownload(new DownloadHistoryEntry(
+                DownloadType.Lifecourse,
+                key,
+                User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value
+            ));
+            downloadHistoryRepository.Save();
 
             return File(result, encoder.ContentType, $"lifecourse.{format}");
         }
