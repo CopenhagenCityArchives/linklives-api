@@ -9,11 +9,8 @@ php:
 services:
   - docker
 
-stages:
-  - name: script
-    if: branch in (master, development)
-  - name: deploy
-    if: branch in (master, development)
+only:
+- master
 
 before_install:
   # Stop travis mysql as we're using MySQL in an image
@@ -21,8 +18,11 @@ before_install:
   # Print Docker version for debugging purposes
   - docker --version
 
-# Setup containers, run tests, clean up, install production dependencies and push Docker image
 script:
+  - docker build -f ./linklives-api/Dockerfile -t linklives-api .
+
+# Setup containers, run tests, clean up, install production dependencies and push Docker image
+before_deploy:
   # Prepare for deployment of Docker image
   - pip install --user awscli # install aws cli w/o sudo
   - export PATH=$PATH:$HOME/.local/bin # put aws in the path
@@ -32,7 +32,7 @@ script:
   - sed -i "s/{image-tag}/${IMAGE_TAG}/g" docker-compose.yml
 
   # build and push APACS image
-  - docker build -f ./linklives-api/Dockerfile -t linklives-api .
+  # - docker build -f ./linklives-api/Dockerfile -t linklives-api .
   - docker tag linklives-api 282251075226.dkr.ecr.eu-west-1.amazonaws.com/linklives-api:${IMAGE_TAG}
   - docker push 282251075226.dkr.ecr.eu-west-1.amazonaws.com/linklives-api:${IMAGE_TAG}
 
