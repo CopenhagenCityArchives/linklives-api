@@ -21,18 +21,21 @@ namespace linklives_api.Controllers
     {
         private readonly ElasticClient client;
         private readonly IEFLifeCourseRepository lifecourseRepository;
+        private readonly IKeyedRepository<LifeCourse> esLifecourseRepository;
         private readonly IPersonAppearanceRepository paRepository;
         private readonly IEFDownloadHistoryRepository downloadHistoryRepository;
 
         public SearchController(
             ElasticClient client,
             IEFLifeCourseRepository lifecourseRepository,
+            IKeyedRepository<LifeCourse> esLifecourseRepository,
             IPersonAppearanceRepository paRepository,
             IEFDownloadHistoryRepository downloadHistoryRepository
         )
         {
             this.client = client;
             this.lifecourseRepository = lifecourseRepository;
+            this.esLifecourseRepository = esLifecourseRepository;
             this.paRepository = paRepository;
             this.downloadHistoryRepository = downloadHistoryRepository;
         }
@@ -64,7 +67,14 @@ namespace linklives_api.Controllers
                 return NotFound("No formatter for that format exists.");
             }
 
+            // If requested download size is greater than 500, clamp it at 500.
+            var requestedSize = data.Value<int>("size");
+            if(requestedSize >= 500) {
+                data["size"] = 500;
+            }
+
             var stringData = data.ToString(Newtonsoft.Json.Formatting.None);
+
             var response = client.LowLevel.Search<StringResponse>(indexes, PostData.String(stringData));
 
             if(response.HttpStatusCode >= 400 && response.HttpStatusCode < 500) {
@@ -101,7 +111,7 @@ namespace linklives_api.Controllers
                 .ToList();
 
             var pas = paRepository.GetByIds(paKeys);
-            var lifecourses = lifecourseRepository.GetByKeys(lifecourseKeys);
+            var lifecourses = esLifecourseRepository.GetByKeys(lifecourseKeys);
 
             foreach(var lifecourse in lifecourses) {
                 GetPAsLinksAndLinkRatings(lifecourse);
