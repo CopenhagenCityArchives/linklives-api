@@ -67,7 +67,14 @@ namespace linklives_api.Controllers
                 return NotFound("No formatter for that format exists.");
             }
 
+            // If requested download size is greater than 500, clamp it at 500.
+            var requestedSize = data.Value<int>("size");
+            if(requestedSize >= 500) {
+                data["size"] = 500;
+            }
+
             var stringData = data.ToString(Newtonsoft.Json.Formatting.None);
+
             var response = client.LowLevel.Search<StringResponse>(indexes, PostData.String(stringData));
 
             if(response.HttpStatusCode >= 400 && response.HttpStatusCode < 500) {
