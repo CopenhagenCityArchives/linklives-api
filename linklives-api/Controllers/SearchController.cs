@@ -67,10 +67,10 @@ namespace linklives_api.Controllers
                 return NotFound("No formatter for that format exists.");
             }
 
-            // If requested download size is greater than 500, clamp it at 500.
+            // If requested download size is greater than 1000, clamp it at 1000.
             var requestedSize = data.Value<int>("size");
-            if(requestedSize >= 500) {
-                data["size"] = 500;
+            if(requestedSize >= 1000) {
+                data["size"] = 1000;
             }
 
             var stringData = data.ToString(Newtonsoft.Json.Formatting.None);
