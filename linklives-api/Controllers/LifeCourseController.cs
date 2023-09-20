@@ -52,6 +52,8 @@ namespace linklives_api.Controllers
                 }
                 catch (Exception e)
                 {
+                    System.Console.WriteLine($"Failed to load links and link ratings for lifecourse - returning limited data {e}");
+                    result.PersonAppearances = new List<BasePA>();
                     //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
                     return StatusCode(206, result);
                 }
