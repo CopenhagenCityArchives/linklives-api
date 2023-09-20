@@ -78,7 +78,7 @@ namespace linklives_api.Controllers
         }
 
         private BasePA[] GetRelatedPersonAppearances(BasePA pa) {
-            if(pa.Source_id == null || pa.Pa_grouping_id_wp4 == null) {
+            if(pa.Pa_grouping_id_wp4 == null) {
                 return new BasePA[]{};
             }
 
