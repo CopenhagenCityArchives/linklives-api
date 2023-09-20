@@ -144,9 +144,16 @@ namespace linklives_api.Controllers
                     if(result.type == "pas") {
                         return (object)pas.First(pa => pa.Key == result.key);
                     }
-                    return (object)lifecourses.First(lc => lc.Key == result.key);
-                }).ToArray();
+                    if(result.type == "lifecourses") {
+                        return (object)lifecourses.First(lc => lc.Key == result.key);
+                    }
+                    Console.WriteLine($"WARN: got search result where at least one item did not have a valid type (pas|lifecourses): {result}");
+                    return (object)null;
+                })
+                .Where((results) => results != null)
+                .ToArray();
 
+            // Prep download file data
             var linksRows = lifecourses.SelectMany((lifecourse) => {
                 return lifecourse.Links.Select((link) => {
                     return new Dictionary<string, (string, Exportable)> {
