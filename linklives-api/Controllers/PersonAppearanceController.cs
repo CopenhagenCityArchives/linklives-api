@@ -185,7 +185,7 @@ namespace linklives_api.Controllers
                 return StatusCode(500, $"Failed to get related Person Appearances");
             }
 
-            var relatedPersonAppearancesRows = SpreadsheetSerializer.Serialize(relatedPas);
+            var relatedPersonAppearancesRows = SpreadsheetSerializer.SerializeAll(relatedPas);
 
             var sheet = encoder.Encode(new Dictionary<string, Dictionary<string, (string, Exportable)>[]>{
                 ["Person appearance"] = rows,
