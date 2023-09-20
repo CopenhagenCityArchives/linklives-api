@@ -8,7 +8,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
 COPY ["linklives-api/linklives-api.csproj", "linklives-api/"]
-COPY ["linklives-api-dal/linklives-api-dal.csproj", "linklives-api-dal/"]
 RUN dotnet restore "linklives-api/linklives-api.csproj"
 COPY . .
 WORKDIR "/src/linklives-api"
