@@ -103,18 +103,39 @@ namespace linklives_api.Controllers
             var paKeys = results
                 .Where(result => result.type == "pas")
                 .Select(result => result.key)
-                .ToList();
+                .ToHashSet();
 
             var lifecourseKeys = results
                 .Where(result => result.type == "lifecourses")
                 .Select(result => result.key)
                 .ToList();
 
-            var pas = paRepository.GetByIds(paKeys);
             var lifecourses = esLifecourseRepository.GetByKeys(lifecourseKeys);
 
+            var lifecourseKeyToPersonAppearanceKeys = new Dictionary<string, IEnumerable<string>>();
             foreach(var lifecourse in lifecourses) {
-                GetPAsLinksAndLinkRatings(lifecourse);
+                lifecourseRepository.GetLinksAndRatings(lifecourse);
+                var linkedPaKeys = lifecourse.Links
+                    .SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" })
+                    .Distinct();
+
+                lifecourseKeyToPersonAppearanceKeys[lifecourse.Key] = linkedPaKeys;
+
+                foreach(var paKey in linkedPaKeys) {
+                    paKeys.Add(paKey);
+                }
+            }
+
+            var pas = paRepository.GetByIds(paKeys.ToList());
+
+            var pasByKey = new Dictionary<string, BasePA>();
+            foreach(var pa in pas) {
+                pasByKey.Add(pa.Key, pa);
+            }
+
+            foreach(var lifecourse in lifecourses) {
+                var linkedPaKeys = lifecourseKeyToPersonAppearanceKeys[lifecourse.Key];
+                lifecourse.PersonAppearances = linkedPaKeys.Select((paKey) => pasByKey[paKey]).ToList();
             }
 
             // Create a list of all results that respects the order of results from search
@@ -152,14 +173,6 @@ namespace linklives_api.Controllers
             downloadHistoryRepository.Save();
 
             return File(sheet, encoder.ContentType, $"searchresult.{format}");
-        }
-
-        //TODO: currently duplicated from lifecoursecontroller - deduplicate!
-        private void GetPAsLinksAndLinkRatings(LifeCourse lifecourse)
-        {
-            //Fetch person apperances and add them to the lifecourse
-            lifecourseRepository.GetLinksAndRatings(lifecourse);
-            lifecourse.PersonAppearances = paRepository.GetByIds(lifecourse.Links.SelectMany(l => new[] { $"{l.Source_id1}-{l.Pa_id1}", $"{l.Source_id2}-{l.Pa_id2}" }).Distinct().ToList()).ToList();
         }
     }
 }
