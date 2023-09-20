@@ -128,24 +128,24 @@ namespace linklives_api.Controllers
                 return NotFound();
             }
 
-                bool anyFailed = false;
-                foreach (var lc in result)
+            bool anyFailed = false;
+            foreach (var lc in result)
+            {
+                try
                 {
-                    try
-                    {
-                        GetPAsLinksAndLinkRatings(lc);
-                    }
-                    catch (Exception e)
-                    {
-                        anyFailed = true;
-                        System.Console.WriteLine($"Failed to load links and link ratings for a lifecourse: {e}");
-                    }
+                    GetPAsLinksAndLinkRatings(lc);
                 }
-                //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
-                if(anyFailed) {
-                    return StatusCode(206, result);
+                catch (Exception e)
+                {
+                    anyFailed = true;
+                    System.Console.WriteLine($"Failed to load links and link ratings for a lifecourse: {e}");
                 }
-                return Ok(result);
+            }
+            //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
+            if(anyFailed) {
+                return StatusCode(206, result);
+            }
+            return Ok(result);
         }
 
         // POST: LifeCourse/
