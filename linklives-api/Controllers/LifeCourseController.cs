@@ -123,23 +123,29 @@ namespace linklives_api.Controllers
 
             var result = esRepository.GetByKeys(keys.ToList());
 
-            if (result != null)
+            if (result == null)
             {
-                try
+                return NotFound();
+            }
+
+                bool anyFailed = false;
+                foreach (var lc in result)
                 {
-                    foreach (var lc in result)
+                    try
                     {
                         GetPAsLinksAndLinkRatings(lc);
                     }
+                    catch (Exception e)
+                    {
+                        anyFailed = true;
+                        System.Console.WriteLine($"Failed to load links and link ratings for a lifecourse: {e}");
+                    }
                 }
-                catch (Exception e)
-                {
-                    //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
+                //If for some reason we fail to get the person appearance data we return what we have with http 206 to indicate partial content
+                if(anyFailed) {
                     return StatusCode(206, result);
                 }
                 return Ok(result);
-            }
-            return NotFound();
         }
 
         // POST: LifeCourse/
