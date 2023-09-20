@@ -120,10 +120,10 @@ namespace linklives_api
 
             var settings = new ConnectionSettings(new Uri(Configuration["ElasticSearch-URL"]))
                 .RequestTimeout(TimeSpan.FromMinutes(2))
-                .DisableDirectStreaming()
-                .DefaultMappingFor<LifeCourse>(m => m.IndexName("lifecourses"))
-                .DefaultMappingFor<BasePA>(m => m.IndexName("pas"))
-                .DefualtMappingFor<TranscribedPA>(m => m.IndexName("transcribed"));
+                .DisableDirectStreaming();
+                //.DefaultMappingFor<LifeCourse>(m => m.IndexName("lifecourses"))
+                //.DefaultMappingFor<BasePA>(m => m.IndexName("pas"))
+                //.DefualtMappingFor<TranscribedPA>(m => m.IndexName("transcribed"));
             services.AddSingleton<ElasticClient>(new ElasticClient(settings));
 
             services.AddScoped<IEFLifeCourseRepository, EFLifeCourseRepository>();
